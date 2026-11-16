@@ -1,0 +1,199 @@
+<div class="employee-container">
+
+  <!-- Employee Form -->
+
+  <section class="form-section">
+
+    <h2>
+      @if (editingId !== null) {
+        Edit Employee
+      } @else {
+        Add New Employee
+      }
+    </h2>
+
+    <form (ngSubmit)="saveEmployee()">
+
+      <div class="form-group">
+
+        <label>First Name</label>
+
+        <input 
+          type="text"
+          name="fName"
+          [(ngModel)]="fName"
+          placeholder="Enter first name"
+          required
+        />
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Last Name</label>
+
+        <input
+          type="text"
+          name="lName"
+          [(ngModel)]="lName"
+          placeholder="Enter last name"
+          required
+        />
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Position</label>
+
+        <select
+          name="position"
+          [(ngModel)]="position"
+        >
+
+          <option value="Frontend Developer">
+            Frontend Developer
+          </option>
+
+          <option value="Backend Developer">
+            Backend Developer
+          </option>
+
+          <option value="UI/UX Designer">
+            UI/UX Designer
+          </option>
+
+          <option value="Project Manager">
+            Project Manager
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Salary</label>
+
+        <input
+          type="number"
+          name="salary"
+          [(ngModel)]="salary"
+          placeholder="Enter salary"
+          min="1"
+          max="100000"
+          required
+        />
+
+      </div>
+
+
+      <div class="buttons">
+
+        <button type="submit" class="save-btn">
+
+          @if (editingId !== null) {
+            Save Changes
+          } @else {
+            Add Employee
+          }
+
+        </button>
+
+
+        @if (editingId !== null) {
+
+          <button
+            type="button"
+            class="cancel-btn"
+            (click)="resetForm()"
+          >
+            Cancel
+          </button>
+
+        }
+
+      </div>
+
+    </form>
+
+  </section>
+
+
+  <!-- Employees List -->
+
+  <section class="list-section">
+
+    <h2>Employees List</h2>
+
+    <p class="employee-count">
+      Total Employees: {{ employeesList().length }}
+    </p>
+
+
+    <div class="cards-container">
+
+      @for (employee of employeesList(); track employee.id) {
+
+        <div class="employee-card">
+
+          <h3>
+            {{ employee.fName }}
+            {{ employee.lName }}
+          </h3>
+
+          <p>
+            <strong>ID:</strong>
+            {{ employee.id }}
+          </p>
+
+          <p>
+            <strong>Position:</strong>
+            {{ employee.position }}
+          </p>
+
+          <p>
+            <strong>Salary:</strong>
+            {{ employee.salary }} SAR
+          </p>
+
+
+          <div class="card-buttons">
+
+            <button
+              type="button"
+              class="edit-btn"
+              (click)="editEmployee(employee)"
+            >
+              Edit
+            </button>
+
+
+            <button
+              type="button"
+              class="delete-btn"
+              (click)="deleteEmployee(employee.id)"
+            >
+              Delete
+            </button>
+
+          </div>
+
+        </div>
+
+      } @empty {
+
+        <p class="empty-message">
+          No employees found.
+        </p>
+
+      }
+
+    </div>
+
+  </section>
+
+</div>

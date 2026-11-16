@@ -1,0 +1,27 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #f4f5fb;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 30px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+header h1 {
+  color: #49307e;
+  font-size: 32px;
+}
+
+header p {
+  color: #777;
+  font-size: 16px;
+}
