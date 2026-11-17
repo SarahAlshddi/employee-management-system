@@ -1,12 +1,19 @@
-<div class="container">
+<div class="app-layout">
 
-  <h1>Employee Management System</h1>
+  <app-header />
 
-  <app-employee-list
-    [employeesList]="employees()"
-    (addEmployeeEvent)="addEmployee($event)"
-    (deleteEmployeeEvent)="deleteEmployee($event)"
-    (updateEmployeeEvent)="updateEmployee($event)"
-  />
+  <mat-sidenav-container>
+
+    <mat-sidenav mode="side" opened>
+      <app-sidebar />
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <router-outlet />
+    </mat-sidenav-content>
+
+  </mat-sidenav-container>
+
+  <app-footer />
 
 </div>

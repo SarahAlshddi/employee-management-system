@@ -1,0 +1,14 @@
+:host {
+  display: block;
+  height: 100%;
+  background-color: #f5f7fb;
+}
+
+mat-nav-list {
+  padding-top: 16px;
+}
+
+.active-link {
+  background-color: #dbeafe !important;
+  border-radius: 8px;
+}

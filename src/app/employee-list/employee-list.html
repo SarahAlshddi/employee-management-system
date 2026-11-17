@@ -3,123 +3,109 @@
   <!-- Employee Form -->
 
   <section class="form-section">
+<h2>
+  @if (editingId !== null) {
+    Edit Employee
+  } @else {
+    Add New Employee
+  }
+</h2>
 
-    <h2>
+<form (ngSubmit)="saveEmployee()">
+
+  <!-- First Name -->
+  <mat-form-field appearance="outline">
+    <mat-label>First Name</mat-label>
+
+    <input
+      matInput
+      type="text"
+      name="fName"
+      [(ngModel)]="fName"
+      required
+    />
+  </mat-form-field>
+
+  <!-- Last Name -->
+  <mat-form-field appearance="outline">
+    <mat-label>Last Name</mat-label>
+
+    <input
+      matInput
+      type="text"
+      name="lName"
+      [(ngModel)]="lName"
+      required
+    />
+  </mat-form-field>
+
+  <!-- Position -->
+  <mat-form-field appearance="outline">
+    <mat-label>Position</mat-label>
+
+    <mat-select
+      name="position"
+      [(ngModel)]="position"
+    >
+      <mat-option value="Frontend Developer">
+        Frontend Developer
+      </mat-option>
+
+      <mat-option value="Backend Developer">
+        Backend Developer
+      </mat-option>
+
+      <mat-option value="UI/UX Designer">
+        UI/UX Designer
+      </mat-option>
+
+      <mat-option value="Project Manager">
+        Project Manager
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Salary -->
+  <mat-form-field appearance="outline">
+    <mat-label>Salary</mat-label>
+
+    <input
+      matInput
+      type="number"
+      name="salary"
+      [(ngModel)]="salary"
+      min="1"
+      max="100000"
+      required
+    />
+
+    <span matTextSuffix>SAR</span>
+  </mat-form-field>
+
+  <!-- Buttons -->
+  <div class="buttons">
+
+    <button matButton="filled" type="submit">
       @if (editingId !== null) {
-        Edit Employee
+        Save Changes
       } @else {
-        Add New Employee
+        Add Employee
       }
-    </h2>
+    </button>
 
-    <form (ngSubmit)="saveEmployee()">
+    @if (editingId !== null) {
+      <button
+        matButton="outlined"
+        type="button"
+        (click)="resetForm()"
+      >
+        Cancel
+      </button>
+    }
 
-      <div class="form-group">
+  </div>
 
-        <label>First Name</label>
-
-        <input 
-          type="text"
-          name="fName"
-          [(ngModel)]="fName"
-          placeholder="Enter first name"
-          required
-        />
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>Last Name</label>
-
-        <input
-          type="text"
-          name="lName"
-          [(ngModel)]="lName"
-          placeholder="Enter last name"
-          required
-        />
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>Position</label>
-
-        <select
-          name="position"
-          [(ngModel)]="position"
-        >
-
-          <option value="Frontend Developer">
-            Frontend Developer
-          </option>
-
-          <option value="Backend Developer">
-            Backend Developer
-          </option>
-
-          <option value="UI/UX Designer">
-            UI/UX Designer
-          </option>
-
-          <option value="Project Manager">
-            Project Manager
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>Salary</label>
-
-        <input
-          type="number"
-          name="salary"
-          [(ngModel)]="salary"
-          placeholder="Enter salary"
-          min="1"
-          max="100000"
-          required
-        />
-
-      </div>
-
-
-      <div class="buttons">
-
-        <button type="submit" class="save-btn">
-
-          @if (editingId !== null) {
-            Save Changes
-          } @else {
-            Add Employee
-          }
-
-        </button>
-
-
-        @if (editingId !== null) {
-
-          <button
-            type="button"
-            class="cancel-btn"
-            (click)="resetForm()"
-          >
-            Cancel
-          </button>
-
-        }
-
-      </div>
-
-    </form>
-
+</form>
   </section>
 
 
@@ -134,66 +120,90 @@
     </p>
 
 
-    <div class="cards-container">
+<table mat-table [dataSource]="dataSource">
 
-      @for (employee of employeesList(); track employee.id) {
+  <!-- ID Column -->
+  <ng-container matColumnDef="id">
 
-        <div class="employee-card">
+    <th mat-header-cell *matHeaderCellDef>
+      ID
+    </th>
 
-          <h3>
-            {{ employee.fName }}
-            {{ employee.lName }}
-          </h3>
+    <td mat-cell *matCellDef="let employee">
+      {{ employee.id }}
+    </td>
 
-          <p>
-            <strong>ID:</strong>
-            {{ employee.id }}
-          </p>
+  </ng-container>
+<!-- First Name Column -->
+<ng-container matColumnDef="fName">
+  <th mat-header-cell *matHeaderCellDef>First Name</th>
+  <td mat-cell *matCellDef="let employee">
+    {{ employee.fName }}
+  </td>
+</ng-container>
 
-          <p>
-            <strong>Position:</strong>
-            {{ employee.position }}
-          </p>
+<!-- Last Name Column -->
+<ng-container matColumnDef="lName">
+  <th mat-header-cell *matHeaderCellDef>Last Name</th>
+  <td mat-cell *matCellDef="let employee">
+    {{ employee.lName }}
+  </td>
+</ng-container>
 
-          <p>
-            <strong>Salary:</strong>
-            {{ employee.salary }} SAR
-          </p>
+<!-- Position Column -->
+<ng-container matColumnDef="position">
+  <th mat-header-cell *matHeaderCellDef>Position</th>
+  <td mat-cell *matCellDef="let employee">
+    {{ employee.position }}
+  </td>
+</ng-container>
 
+<!-- Salary Column -->
+<ng-container matColumnDef="salary">
+  <th mat-header-cell *matHeaderCellDef>Salary</th>
+  <td mat-cell *matCellDef="let employee">
+    {{ employee.salary }} SAR
+  </td>
+</ng-container>
 
-          <div class="card-buttons">
+<!-- Actions Column -->
+<ng-container matColumnDef="actions">
+  <th mat-header-cell *matHeaderCellDef>Actions</th>
 
-            <button
-              type="button"
-              class="edit-btn"
-              (click)="editEmployee(employee)"
-            >
-              Edit
-            </button>
+  <td mat-cell *matCellDef="let employee">
 
+    <!-- Edit Button -->
+    <button
+      matIconButton
+      type="button"
+      aria-label="Edit employee"
+      (click)="editEmployee(employee)"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
 
-            <button
-              type="button"
-              class="delete-btn"
-              (click)="deleteEmployee(employee.id)"
-            >
-              Delete
-            </button>
+    <!-- Delete Button -->
+    <button
+      matIconButton
+      type="button"
+      aria-label="Delete employee"
+      (click)="deleteEmployee(employee.id)"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
 
-          </div>
+  </td>
+</ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 
-        </div>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-      } @empty {
-
-        <p class="empty-message">
-          No employees found.
-        </p>
-
-      }
-
-    </div>
-
+</table>
+<mat-paginator
+  [pageSize]="5"
+  [pageSizeOptions]="[5, 10, 20]"
+  showFirstLastButtons>
+</mat-paginator>
   </section>
 
 </div>

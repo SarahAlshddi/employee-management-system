@@ -121,3 +121,17 @@ button:hover {
   color: #888;
   padding: 30px;
 }
+.form-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-section mat-form-field {
+  width: 100%;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+}
