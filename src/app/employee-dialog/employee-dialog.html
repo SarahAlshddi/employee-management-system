@@ -1,0 +1,78 @@
+<h2 mat-dialog-title>
+  @if (data) {
+    Edit Employee
+  } @else {
+    Add Employee
+  }
+</h2>
+
+<mat-dialog-content>
+
+  <form id="employeeForm" (ngSubmit)="save()">
+
+    <!-- First Name -->
+    <mat-form-field appearance="outline">
+      <mat-label>First Name</mat-label>
+      <input
+        matInput
+        name="fName"
+        [(ngModel)]="fName"
+        required
+      />
+    </mat-form-field>
+
+    <!-- Last Name -->
+    <mat-form-field appearance="outline">
+      <mat-label>Last Name</mat-label>
+      <input
+        matInput
+        name="lName"
+        [(ngModel)]="lName"
+        required
+      />
+    </mat-form-field>
+
+    <!-- Position -->
+    <mat-form-field appearance="outline">
+      <mat-label>Position</mat-label>
+
+      <mat-select name="position" [(ngModel)]="position">
+        <mat-option value="Frontend Developer">Frontend Developer</mat-option>
+        <mat-option value="Backend Developer">Backend Developer</mat-option>
+        <mat-option value="UI/UX Designer">UI/UX Designer</mat-option>
+        <mat-option value="Project Manager">Project Manager</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Salary -->
+    <mat-form-field appearance="outline">
+      <mat-label>Salary</mat-label>
+      <input
+        matInput
+        type="number"
+        name="salary"
+        [(ngModel)]="salary"
+        min="1"
+        max="100000"
+        required
+      />
+      <span matTextSuffix>SAR</span>
+    </mat-form-field>
+
+  </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button matButton="outlined" type="button" (click)="cancel()">
+    Cancel
+  </button>
+
+  <button matButton="filled" type="submit" form="employeeForm">
+    @if (data) {
+      Save Changes
+    } @else {
+      Add Employee
+    }
+  </button>
+</mat-dialog-actions>

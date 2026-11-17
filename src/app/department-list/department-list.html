@@ -1,1 +1,80 @@
-<p>department-list works!</p>
+<div class="department-container">
+
+  <div class="departments-header">
+    <h2>Departments</h2>
+
+    <button
+      matButton="filled"
+      type="button"
+      (click)="openAddDialog()"
+    >
+      <mat-icon>add</mat-icon>
+      Add Department
+    </button>
+  </div>
+
+  <p>Total Departments: {{ departmentsList().length }}</p>
+
+  <table mat-table [dataSource]="dataSource">
+
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let department">
+        {{ department.id }}
+      </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Department Name</th>
+      <td mat-cell *matCellDef="let department">
+        {{ department.name }}
+      </td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+
+      <td mat-cell *matCellDef="let department">
+
+        <button
+          matIconButton
+          type="button"
+          aria-label="Edit department"
+          (click)="editDepartment(department)"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button
+          matIconButton
+          type="button"
+          aria-label="Delete department"
+          (click)="deleteDepartment(department)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+        No departments found.
+      </td>
+    </tr>
+
+  </table>
+
+  <mat-paginator
+    [pageSize]="5"
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons>
+  </mat-paginator>
+
+</div>

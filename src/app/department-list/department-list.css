@@ -1,0 +1,19 @@
+.department-container {
+  padding: 16px;
+}
+
+.departments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.departments-header h2 {
+  margin: 0;
+}
+
+table {
+  width: 100%;
+}

@@ -1,114 +1,5 @@
 <div class="employee-container">
 
-  <!-- Employee Form -->
-
-  <section class="form-section">
-<h2>
-  @if (editingId !== null) {
-    Edit Employee
-  } @else {
-    Add New Employee
-  }
-</h2>
-
-<form (ngSubmit)="saveEmployee()">
-
-  <!-- First Name -->
-  <mat-form-field appearance="outline">
-    <mat-label>First Name</mat-label>
-
-    <input
-      matInput
-      type="text"
-      name="fName"
-      [(ngModel)]="fName"
-      required
-    />
-  </mat-form-field>
-
-  <!-- Last Name -->
-  <mat-form-field appearance="outline">
-    <mat-label>Last Name</mat-label>
-
-    <input
-      matInput
-      type="text"
-      name="lName"
-      [(ngModel)]="lName"
-      required
-    />
-  </mat-form-field>
-
-  <!-- Position -->
-  <mat-form-field appearance="outline">
-    <mat-label>Position</mat-label>
-
-    <mat-select
-      name="position"
-      [(ngModel)]="position"
-    >
-      <mat-option value="Frontend Developer">
-        Frontend Developer
-      </mat-option>
-
-      <mat-option value="Backend Developer">
-        Backend Developer
-      </mat-option>
-
-      <mat-option value="UI/UX Designer">
-        UI/UX Designer
-      </mat-option>
-
-      <mat-option value="Project Manager">
-        Project Manager
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <!-- Salary -->
-  <mat-form-field appearance="outline">
-    <mat-label>Salary</mat-label>
-
-    <input
-      matInput
-      type="number"
-      name="salary"
-      [(ngModel)]="salary"
-      min="1"
-      max="100000"
-      required
-    />
-
-    <span matTextSuffix>SAR</span>
-  </mat-form-field>
-
-  <!-- Buttons -->
-  <div class="buttons">
-
-    <button matButton="filled" type="submit">
-      @if (editingId !== null) {
-        Save Changes
-      } @else {
-        Add Employee
-      }
-    </button>
-
-    @if (editingId !== null) {
-      <button
-        matButton="outlined"
-        type="button"
-        (click)="resetForm()"
-      >
-        Cancel
-      </button>
-    }
-
-  </div>
-
-</form>
-  </section>
-
-
   <!-- Employees List -->
 
   <section class="list-section">
@@ -118,7 +9,20 @@
     <p class="employee-count">
       Total Employees: {{ employeesList().length }}
     </p>
+<div class="employees-header">
 
+  <h2>Employees</h2>
+
+  <button
+    matButton="filled"
+    type="button"
+    (click)="openAddDialog()"
+  >
+    <mat-icon>add</mat-icon>
+    Add Employee
+  </button>
+
+</div>
 
 <table mat-table [dataSource]="dataSource">
 
@@ -187,7 +91,7 @@
       matIconButton
       type="button"
       aria-label="Delete employee"
-      (click)="deleteEmployee(employee.id)"
+      (click)="deleteEmployee(employee)"
     >
       <mat-icon>delete</mat-icon>
     </button>

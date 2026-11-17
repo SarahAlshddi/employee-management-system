@@ -1,26 +1,21 @@
 import { Component, inject , effect , viewChild} from '@angular/core';
-import { FormsModule } from '@angular/forms'; // for ngModel 
 import type { Employee } from './employee.model';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { EmployeeService } from '../services/employee';
+import { MatDialog } from '@angular/material/dialog';
+import { EmployeeDialog } from '../employee-dialog/employee-dialog';
+import { ConfirmDialog } from '../confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-employee-list',
 imports: [
-  FormsModule,
   MatTableModule,
   MatPaginatorModule,
-  MatButtonModule,
   MatFormFieldModule,
-  MatInputModule,
-  MatSelectModule,
   MatIconModule
 ],
   templateUrl: './employee-list.html',
@@ -29,7 +24,7 @@ imports: [
 export class EmployeeList {
 
 private employeeService = inject(EmployeeService);
-
+private dialog = inject(MatDialog);
 employeesList = this.employeeService.employees;
   // TABLE DATA 
   dataSource = new MatTableDataSource<Employee>([]);
@@ -61,90 +56,62 @@ displayedColumns: string[] = [
 ];
 
 
+openAddDialog() {
 
-
-
-  // Form Data
-  fName = '';
-  lName = '';
-
-  position: Employee['position'] = 'Frontend Developer';
-
-  salary = 0;
-
-
-  // Editing
-  editingId: number | null = null; // null = add , number = edit
-
-
-  // Save Employee
-  saveEmployee() {
-
-    if (
-      !this.fName.trim() || // عشان الفالديشن 
-      !this.lName.trim() ||
-      this.salary <= 0
-    ) {
-      return;
-    }
-
-    const employeeData = {
-      fName: this.fName.trim(),
-      lName: this.lName.trim(),
-      position: this.position,
-      salary: this.salary
-    };
-
-    if (this.editingId !== null) {
-
-  this.employeeService.updateEmployee({
-    id: this.editingId,
-    ...employeeData
+  const dialogRef = this.dialog.open(EmployeeDialog, {
+    width: '450px',
+    data: null
   });
 
-} else {
+  dialogRef.afterClosed().subscribe(result => {
 
-  this.employeeService.addEmployee(employeeData);
+    if (result) {
+      this.employeeService.addEmployee(result);
+    }
+
+  });
 
 }
-    this.resetForm();
-  }
-
-
   // Edit Employee
-  editEmployee(employee: Employee) {
+editEmployee(employee: Employee) {
 
-    this.editingId = employee.id;
+  const dialogRef = this.dialog.open(EmployeeDialog, {
+    width: '450px',
+    data: employee
+  });
 
-    this.fName = employee.fName;
-    this.lName = employee.lName;
-    this.position = employee.position;
-    this.salary = employee.salary;
+  dialogRef.afterClosed().subscribe(result => {
 
-  }
+    if (result) {
+      this.employeeService.updateEmployee({
+        id: employee.id,
+        ...result
+      });
+    }
+
+  });
+
+}
 
 
   // Delete Employee
-  deleteEmployee(id: number) {
+deleteEmployee(employee: Employee) {
 
-  this.employeeService.deleteEmployee(id);
+  console.log('Delete clicked:', employee.id);
 
-    if (this.editingId === id) {
-      this.resetForm();
+  const dialogRef = this.dialog.open(ConfirmDialog, {
+    width: '400px',
+    data: {
+      name: `${employee.fName} ${employee.lName}`
     }
+  });
 
-  }
+  dialogRef.afterClosed().subscribe(confirmed => {
+    if (confirmed === true) {
+      this.employeeService.deleteEmployee(employee.id);
+    }
+  });
+}
 
-
-  // Reset Form
-  resetForm() {
-
-    this.fName = '';
-    this.lName = '';
-    this.position = 'Frontend Developer';
-    this.salary = 0;
-    this.editingId = null; // عشان يرجع لوضع الاضافة 
-
-  }
 
 }
