@@ -33,12 +33,20 @@ export class DepartmentDialog {
 
   name = this.data?.name ?? '';
 
+  description = this.data?.description ?? '';
+
   save() {
-    if (!this.name.trim()) {
+
+    if (!this.name.trim() || !this.description.trim()) {
       return;
     }
 
-    this.dialogRef.close(this.name.trim());
+    const departmentData = {
+      name: this.name.trim(),
+      description: this.description.trim()
+    };
+
+    this.dialogRef.close(departmentData);
   }
 
   cancel() {

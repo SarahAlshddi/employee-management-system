@@ -1,10 +1,23 @@
 import { Component, inject, effect, viewChild } from '@angular/core';
+
 import type { Department } from './department.model';
 
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import {
+  MatTableModule,
+  MatTableDataSource
+} from '@angular/material/table';
+
+import {
+  MatPaginator,
+  MatPaginatorModule
+} from '@angular/material/paginator';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
 import { MatDialog } from '@angular/material/dialog';
 
 import { DepartmentService } from '../services/department';
@@ -17,7 +30,9 @@ import { ConfirmDialog } from '../confirm-dialog/confirm-dialog';
     MatTableModule,
     MatPaginatorModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   templateUrl: './department-list.html',
   styleUrl: './department-list.css'
@@ -25,6 +40,7 @@ import { ConfirmDialog } from '../confirm-dialog/confirm-dialog';
 export class DepartmentList {
 
   private departmentService = inject(DepartmentService);
+
   private dialog = inject(MatDialog);
 
   departmentsList = this.departmentService.departments;
@@ -36,14 +52,18 @@ export class DepartmentList {
   displayedColumns: string[] = [
     'id',
     'name',
+    'description',
     'actions'
   ];
 
   constructor() {
+
+    // Update table when departments change
     effect(() => {
       this.dataSource.data = this.departmentsList();
     });
 
+    // Connect paginator
     effect(() => {
       const paginator = this.paginator();
 
@@ -51,41 +71,69 @@ export class DepartmentList {
         this.dataSource.paginator = paginator;
       }
     });
+
+    // Search by name or description
+    this.dataSource.filterPredicate = (department, filter) => {
+
+      const searchText = (
+        department.name + ' ' + department.description
+      ).toLowerCase();
+
+      return searchText.includes(filter);
+    };
+
+  }
+
+  // Search Departments
+  applyFilter(event: Event) {
+
+    const filterValue = (event.target as HTMLInputElement).value;
+
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    this.dataSource.paginator?.firstPage();
   }
 
   // Add Department
   openAddDialog() {
+
     const dialogRef = this.dialog.open(DepartmentDialog, {
       width: '450px',
       data: null
     });
 
     dialogRef.afterClosed().subscribe(result => {
+
       if (result) {
         this.departmentService.addDepartment(result);
       }
+
     });
   }
 
   // Edit Department
   editDepartment(department: Department) {
+
     const dialogRef = this.dialog.open(DepartmentDialog, {
       width: '450px',
       data: department
     });
 
     dialogRef.afterClosed().subscribe(result => {
+
       if (result) {
         this.departmentService.updateDepartment({
           id: department.id,
-          name: result
+          ...result
         });
       }
+
     });
   }
 
   // Delete Department
   deleteDepartment(department: Department) {
+
     const dialogRef = this.dialog.open(ConfirmDialog, {
       width: '400px',
       data: {
@@ -94,9 +142,11 @@ export class DepartmentList {
     });
 
     dialogRef.afterClosed().subscribe(confirmed => {
+
       if (confirmed === true) {
         this.departmentService.deleteDepartment(department.id);
       }
+
     });
   }
 

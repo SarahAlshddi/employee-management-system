@@ -5,13 +5,30 @@ import type { Department } from '../department-list/department.model';
 export class DepartmentService {
 
   departments = signal<Department[]>([
-    { id: 101, name: 'IT' },
-    { id: 102, name: 'Human Resources' },
-    { id: 103, name: 'Finance' },
-    { id: 104, name: 'Marketing' }
+    {
+      id: 101,
+      name: 'IT',
+      description: 'Information Technology and Software Development'
+    },
+    {
+      id: 102,
+      name: 'Human Resources',
+      description: 'Recruitment and Employee Relations'
+    },
+    {
+      id: 103,
+      name: 'Finance',
+      description: 'Financial Management and Budgeting'
+    },
+    {
+      id: 104,
+      name: 'Marketing',
+      description: 'Marketing and Advertising'
+    }
   ]);
 
-  addDepartment(name: string) {
+  // Add Department
+  addDepartment(data: Omit<Department, 'id'>) {
 
     const newId = Math.max(
       0,
@@ -20,7 +37,7 @@ export class DepartmentService {
 
     const newDepartment: Department = {
       id: newId,
-      name: name.trim()
+      ...data
     };
 
     this.departments.update(current => [
@@ -29,6 +46,7 @@ export class DepartmentService {
     ]);
   }
 
+  // Update Department
   updateDepartment(updatedDepartment: Department) {
 
     this.departments.update(current =>
@@ -40,6 +58,7 @@ export class DepartmentService {
     );
   }
 
+  // Delete Department
   deleteDepartment(id: number) {
 
     this.departments.update(current =>
