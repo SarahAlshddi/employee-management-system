@@ -17,10 +17,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { JobTitleService } from '../services/job-title';
 import { DepartmentService } from '../services/department';
+import { EmployeeService } from '../services/employee';
+
 import { JobTitleDialog } from '../job-title-dialog/job-title-dialog';
 import { ConfirmDialog } from '../confirm-dialog/confirm-dialog';
 
@@ -40,15 +44,21 @@ import { ConfirmDialog } from '../confirm-dialog/confirm-dialog';
 })
 export class JobTitleList {
 
+  // Dependency Injection
   private jobTitleService = inject(JobTitleService);
   private departmentService = inject(DepartmentService);
-  private dialog = inject(MatDialog);
+  private employeeService = inject(EmployeeService);
 
+  private dialog = inject(MatDialog);
+  private snackBar = inject(MatSnackBar);
+
+  // Data from Services
   jobTitlesList = this.jobTitleService.jobTitles;
   departmentsList = this.departmentService.departments;
+  employees = this.employeeService.employees;
 
+  // Table
   dataSource = new MatTableDataSource<JobTitle>([]);
-
   paginator = viewChild(MatPaginator);
 
   displayedColumns: string[] = [
@@ -59,15 +69,18 @@ export class JobTitleList {
     'actions'
   ];
 
+  // Filters
   searchText = '';
   selectedDepartment: number | null = null;
 
   constructor() {
 
+    // Update table when Job Titles change
     effect(() => {
       this.dataSource.data = this.jobTitlesList();
     });
 
+    // Connect paginator
     effect(() => {
       const paginator = this.paginator();
 
@@ -76,7 +89,7 @@ export class JobTitleList {
       }
     });
 
-    // Filter by search text and department
+    // Search and Department Filter
     this.dataSource.filterPredicate = (job, filter) => {
 
       const filterData: {
@@ -101,10 +114,9 @@ export class JobTitleList {
 
       return matchesSearch && matchesDepartment;
     };
-
   }
 
-  // Get department name from its ID
+  // Get Department Name
   getDepartmentName(departmentId: number): string {
 
     const department = this.departmentsList().find(
@@ -114,7 +126,7 @@ export class JobTitleList {
     return department?.name ?? 'Unknown';
   }
 
-  // Search
+  // Search Job Titles
   applySearch(event: Event) {
 
     this.searchText =
@@ -131,7 +143,7 @@ export class JobTitleList {
     this.applyFilters();
   }
 
-  // Apply both filters
+  // Apply Search and Department Filters
   applyFilters() {
 
     this.dataSource.filter = JSON.stringify({
@@ -179,22 +191,69 @@ export class JobTitleList {
     });
   }
 
+  // Check if Job Title is assigned to employees
+  hasAssignedEmployees(job: JobTitle): boolean {
+
+    return this.employees().some(
+      employee => employee.jobTitleId === job.id
+    );
+  }
+
   // Delete Job Title
   deleteJobTitle(job: JobTitle) {
 
+    // Prevent deletion when employees are assigned
+    if (this.hasAssignedEmployees(job)) {
+
+      this.snackBar.open(
+        `Cannot delete ${job.name}. This job title is assigned to employees.`,
+        'Close',
+        {
+          duration: 5000
+        }
+      );
+
+      return;
+    }
+
+    // Open confirmation dialog
     const dialogRef = this.dialog.open(ConfirmDialog, {
       width: '400px',
       data: {
-  title: 'Delete Job Title',
-  name: job.name
-}
+        title: 'Delete Job Title',
+        name: job.name
+      }
     });
 
     dialogRef.afterClosed().subscribe(confirmed => {
 
-      if (confirmed === true) {
-        this.jobTitleService.deleteJobTitle(job.id);
+      if (confirmed !== true) {
+        return;
       }
+
+      // Recheck before deleting
+      if (this.hasAssignedEmployees(job)) {
+
+        this.snackBar.open(
+          `Cannot delete ${job.name}. This job title is now assigned to employees.`,
+          'Close',
+          {
+            duration: 5000
+          }
+        );
+
+        return;
+      }
+
+      this.jobTitleService.deleteJobTitle(job.id);
+
+      this.snackBar.open(
+        `${job.name} deleted successfully.`,
+        'Close',
+        {
+          duration: 3000
+        }
+      );
 
     });
   }
