@@ -54,11 +54,19 @@
   </td>
 </ng-container>
 
-<!-- Position Column -->
-<ng-container matColumnDef="position">
-  <th mat-header-cell *matHeaderCellDef>Position</th>
+<!-- Department Column -->
+<ng-container matColumnDef="department">
+  <th mat-header-cell *matHeaderCellDef>Department</th>
   <td mat-cell *matCellDef="let employee">
-    {{ employee.position }}
+    {{ getDepartmentName(employee.departmentId) }}
+  </td>
+</ng-container>
+
+<!-- Job Title Column -->
+<ng-container matColumnDef="jobTitle">
+  <th mat-header-cell *matHeaderCellDef>Job Title</th>
+  <td mat-cell *matCellDef="let employee">
+    {{ getJobTitleName(employee.jobTitleId) }}
   </td>
 </ng-container>
 

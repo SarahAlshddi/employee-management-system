@@ -32,17 +32,41 @@
       />
     </mat-form-field>
 
-    <!-- Position -->
-    <mat-form-field appearance="outline">
-      <mat-label>Position</mat-label>
+    <!-- Department -->
+<mat-form-field appearance="outline">
+  <mat-label>Department</mat-label>
 
-      <mat-select name="position" [(ngModel)]="position">
-        <mat-option value="Frontend Developer">Frontend Developer</mat-option>
-        <mat-option value="Backend Developer">Backend Developer</mat-option>
-        <mat-option value="UI/UX Designer">UI/UX Designer</mat-option>
-        <mat-option value="Project Manager">Project Manager</mat-option>
-      </mat-select>
-    </mat-form-field>
+  <mat-select
+    name="departmentId"
+    [ngModel]="departmentId()"
+    (ngModelChange)="onDepartmentChange($event)"
+    required
+  >
+    @for (department of departments(); track department.id) {
+      <mat-option [value]="department.id">
+        {{ department.name }}
+      </mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+
+<!-- Job Title -->
+<mat-form-field appearance="outline">
+  <mat-label>Job Title</mat-label>
+
+  <mat-select
+    name="jobTitleId"
+    [(ngModel)]="jobTitleId"
+    [disabled]="departmentId() === null"
+    required
+  >
+    @for (job of filteredJobTitles(); track job.id) {
+      <mat-option [value]="job.id">
+        {{ job.name }}
+      </mat-option>
+    }
+  </mat-select>
+</mat-form-field>
 
     <!-- Salary -->
     <mat-form-field appearance="outline">

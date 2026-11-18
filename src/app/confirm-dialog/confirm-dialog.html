@@ -1,12 +1,10 @@
-<h2 mat-dialog-title>Delete Employee</h2>
+<h2 mat-dialog-title>
+  {{ data.title }}
+</h2>
 
 <mat-dialog-content>
-  <p>
-    Are you sure you want to delete
-    <strong>{{ data.name }}</strong>?
-  </p>
-
-  <p>This action cannot be undone.</p>
+  Are you sure you want to delete
+  <strong>{{ data.name }}</strong>?
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
@@ -14,14 +12,16 @@
   <button
     matButton="outlined"
     type="button"
-    (click)="cancel()">
+    (click)="cancel()"
+  >
     Cancel
   </button>
 
   <button
     matButton="filled"
     type="button"
-    (click)="confirm()">
+    (click)="confirm()"
+  >
     Delete
   </button>
 

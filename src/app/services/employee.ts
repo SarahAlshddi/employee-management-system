@@ -8,28 +8,32 @@ employees = signal<Employee[]>([
     id: 2911,
     fName: 'Sara',
     lName: 'Ahmed',
-    position: 'Frontend Developer',
+    departmentId: 101,
+    jobTitleId: 201,
     salary: 8000
   },
   {
     id: 6767,
     fName: 'Noura',
     lName: 'Ali',
-    position: 'Backend Developer',
+    departmentId: 101,
+    jobTitleId: 202,
     salary: 9500
   },
   {
     id: 9264,
     fName: 'Reem',
     lName: 'Khalid',
-    position: 'UI/UX Designer',
+    departmentId: 104,
+    jobTitleId: 203,
     salary: 7500
   },
   {
     id: 4639,
     fName: 'Mohammed',
     lName: 'Fahad',
-    position: 'Project Manager',
+    departmentId: 101,
+    jobTitleId: 201,
     salary: 12000
   }
 ]);

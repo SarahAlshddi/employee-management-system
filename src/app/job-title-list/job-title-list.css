@@ -1,0 +1,31 @@
+.job-titles-container {
+  padding: 16px;
+}
+
+.job-titles-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.job-titles-header h2 {
+  margin: 0;
+}
+
+.filters {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.filters mat-form-field {
+  flex: 1;
+  min-width: 220px;
+}
+
+table {
+  width: 100%;
+}

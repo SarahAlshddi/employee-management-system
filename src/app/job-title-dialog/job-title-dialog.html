@@ -1,0 +1,81 @@
+<h2 mat-dialog-title>
+  @if (data) {
+    Edit Job Title
+  } @else {
+    Add Job Title
+  }
+</h2>
+
+<mat-dialog-content>
+
+  <form id="jobTitleForm" (ngSubmit)="save()">
+
+    <!-- Job Title -->
+    <mat-form-field appearance="outline">
+      <mat-label>Job Title</mat-label>
+
+      <input
+        matInput
+        name="name"
+        [(ngModel)]="name"
+        required
+      />
+    </mat-form-field>
+
+    <!-- Department -->
+    <mat-form-field appearance="outline">
+      <mat-label>Department</mat-label>
+
+      <mat-select
+        name="departmentId"
+        [(ngModel)]="departmentId"
+        required
+      >
+        @for (department of departments(); track department.id) {
+          <mat-option [value]="department.id">
+            {{ department.name }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Description -->
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+
+      <textarea
+        matInput
+        name="description"
+        [(ngModel)]="description"
+        rows="3"
+        required>
+      </textarea>
+    </mat-form-field>
+
+  </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+  <button
+    matButton="outlined"
+    type="button"
+    (click)="cancel()"
+  >
+    Cancel
+  </button>
+
+  <button
+    matButton="filled"
+    type="submit"
+    form="jobTitleForm"
+  >
+    @if (data) {
+      Save Changes
+    } @else {
+      Add Job Title
+    }
+  </button>
+
+</mat-dialog-actions>

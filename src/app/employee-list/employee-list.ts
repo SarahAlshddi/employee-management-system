@@ -1,117 +1,176 @@
-import { Component, inject , effect , viewChild} from '@angular/core';
+import { Component, inject, effect, viewChild } from '@angular/core';
+
 import type { Employee } from './employee.model';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatFormFieldModule } from '@angular/material/form-field';
+
+import {
+  MatTableModule,
+  MatTableDataSource
+} from '@angular/material/table';
+
+import {
+  MatPaginator,
+  MatPaginatorModule
+} from '@angular/material/paginator';
+
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { EmployeeService } from '../services/employee';
 import { MatDialog } from '@angular/material/dialog';
+
+import { EmployeeService } from '../services/employee';
+import { DepartmentService } from '../services/department';
+import { JobTitleService } from '../services/job-title';
+
 import { EmployeeDialog } from '../employee-dialog/employee-dialog';
 import { ConfirmDialog } from '../confirm-dialog/confirm-dialog';
 
+
 @Component({
   selector: 'app-employee-list',
-imports: [
-  MatTableModule,
-  MatPaginatorModule,
-  MatFormFieldModule,
-  MatIconModule
-],
+  imports: [
+    MatTableModule,
+    MatPaginatorModule,
+    MatButtonModule,
+    MatIconModule
+  ],
   templateUrl: './employee-list.html',
   styleUrl: './employee-list.css'
 })
 export class EmployeeList {
 
-private employeeService = inject(EmployeeService);
-private dialog = inject(MatDialog);
-employeesList = this.employeeService.employees;
-  // TABLE DATA 
+  // Dependency Injection
+  private employeeService = inject(EmployeeService);
+  private departmentService = inject(DepartmentService);
+  private jobTitleService = inject(JobTitleService);
+  private dialog = inject(MatDialog);
+
+
+  // Data from Services
+  employeesList = this.employeeService.employees;
+  departments = this.departmentService.departments;
+  jobTitles = this.jobTitleService.jobTitles;
+
+
+  // Table Data
   dataSource = new MatTableDataSource<Employee>([]);
-paginator = viewChild(MatPaginator);
-  // Update table when employees change
-constructor() {
-  effect(() => {
-    this.dataSource.data = this.employeesList();
-  });
 
-  effect(() => {
-    const paginator = this.paginator();
-
-    if (paginator) {
-      this.dataSource.paginator = paginator;
-    }
-  });
-}
-  
+  paginator = viewChild(MatPaginator);
 
 
-displayedColumns: string[] = [
-  'id',
-  'fName',
-  'lName',
-  'position',
-  'salary',
-  'actions'
-];
+  // Table Columns
+  displayedColumns: string[] = [
+    'id',
+    'fName',
+    'lName',
+    'department',
+    'jobTitle',
+    'salary',
+    'actions'
+  ];
 
 
-openAddDialog() {
+  // Constructor
+  constructor() {
 
-  const dialogRef = this.dialog.open(EmployeeDialog, {
-    width: '450px',
-    data: null
-  });
+    // Update table when employees change
+    effect(() => {
+      this.dataSource.data = this.employeesList();
+    });
 
-  dialogRef.afterClosed().subscribe(result => {
+    // Connect Paginator
+    effect(() => {
+      const paginator = this.paginator();
 
-    if (result) {
-      this.employeeService.addEmployee(result);
-    }
+      if (paginator) {
+        this.dataSource.paginator = paginator;
+      }
+    });
 
-  });
+  }
 
-}
+
+  // Get Department Name
+  getDepartmentName(id: number): string {
+
+    const department = this.departments().find(
+      dep => dep.id === id
+    );
+
+    return department?.name ?? 'Unknown';
+  }
+
+
+  // Get Job Title Name
+  getJobTitleName(id: number): string {
+
+    const jobTitle = this.jobTitles().find(
+      job => job.id === id
+    );
+
+    return jobTitle?.name ?? 'Unknown';
+  }
+
+
+  // Add Employee
+  openAddDialog() {
+
+    const dialogRef = this.dialog.open(EmployeeDialog, {
+      width: '450px',
+      data: null
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result) {
+        this.employeeService.addEmployee(result);
+      }
+
+    });
+
+  }
+
+
   // Edit Employee
-editEmployee(employee: Employee) {
+  editEmployee(employee: Employee) {
 
-  const dialogRef = this.dialog.open(EmployeeDialog, {
-    width: '450px',
-    data: employee
-  });
+    const dialogRef = this.dialog.open(EmployeeDialog, {
+      width: '450px',
+      data: employee
+    });
 
-  dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(result => {
 
-    if (result) {
-      this.employeeService.updateEmployee({
-        id: employee.id,
-        ...result
-      });
-    }
+      if (result) {
+        this.employeeService.updateEmployee({
+          id: employee.id,
+          ...result
+        });
+      }
 
-  });
+    });
 
-}
+  }
 
 
   // Delete Employee
-deleteEmployee(employee: Employee) {
+  deleteEmployee(employee: Employee) {
 
-  console.log('Delete clicked:', employee.id);
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      width: '400px',
+      data: {
+  title: 'Delete Employee',
+  name: `${employee.fName} ${employee.lName}`
+}
+    });
 
-  const dialogRef = this.dialog.open(ConfirmDialog, {
-    width: '400px',
-    data: {
-      name: `${employee.fName} ${employee.lName}`
-    }
-  });
+    dialogRef.afterClosed().subscribe(confirmed => {
 
-  dialogRef.afterClosed().subscribe(confirmed => {
-    if (confirmed === true) {
-      this.employeeService.deleteEmployee(employee.id);
-    }
-  });
+      if (confirmed === true) {
+        this.employeeService.deleteEmployee(employee.id);
+      }
+
+    });
+
+  }
+
 }
 
-
-}

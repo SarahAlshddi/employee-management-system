@@ -1,7 +1,8 @@
 import { Component, inject, effect, viewChild } from '@angular/core';
 
 import type { Department } from './department.model';
-
+import { computed } from '@angular/core';
+import { EmployeeService } from '../services/employee';
 import {
   MatTableModule,
   MatTableDataSource
@@ -38,6 +39,9 @@ import { ConfirmDialog } from '../confirm-dialog/confirm-dialog';
   styleUrl: './department-list.css'
 })
 export class DepartmentList {
+private employeeService = inject(EmployeeService);
+
+employees = this.employeeService.employees;
 
   private departmentService = inject(DepartmentService);
 
@@ -49,12 +53,24 @@ export class DepartmentList {
 
   paginator = viewChild(MatPaginator);
 
-  displayedColumns: string[] = [
-    'id',
-    'name',
-    'description',
-    'actions'
-  ];
+displayedColumns: string[] = [
+  'id',
+  'name',
+  'description',
+  'employeesCount',
+  'actions'
+];
+employeeCounts = computed(() => {
+  const counts = new Map<number, number>();
+
+  for (const employee of this.employees()) {
+    const currentCount = counts.get(employee.departmentId) ?? 0;
+
+    counts.set(employee.departmentId, currentCount + 1);
+  }
+
+  return counts;
+});
 
   constructor() {
 
@@ -137,8 +153,9 @@ export class DepartmentList {
     const dialogRef = this.dialog.open(ConfirmDialog, {
       width: '400px',
       data: {
-        name: department.name
-      }
+  title: 'Delete Department',
+  name: department.name
+}
     });
 
     dialogRef.afterClosed().subscribe(confirmed => {
