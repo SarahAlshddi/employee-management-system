@@ -1,12 +1,14 @@
-<mat-nav-list>
+<mat-nav-list class="sidebar-nav">
 
   <!-- Employees -->
   <a
     mat-list-item
     routerLink="/employees"
     routerLinkActive="active-link"
+    matTooltip="Employees"
+    matTooltipPosition="right"
   >
-    <mat-icon matListItemIcon>people</mat-icon>
+    <mat-icon matListItemIcon>people_outline</mat-icon>
     <span matListItemTitle>Employees</span>
   </a>
 
@@ -15,6 +17,8 @@
     mat-list-item
     routerLink="/departments"
     routerLinkActive="active-link"
+    matTooltip="Departments"
+    matTooltipPosition="right"
   >
     <mat-icon matListItemIcon>business</mat-icon>
     <span matListItemTitle>Departments</span>
@@ -25,8 +29,10 @@
     mat-list-item
     routerLink="/job-titles"
     routerLinkActive="active-link"
+    matTooltip="Job Titles"
+    matTooltipPosition="right"
   >
-    <mat-icon matListItemIcon>work</mat-icon>
+    <mat-icon matListItemIcon>work_outline</mat-icon>
     <span matListItemTitle>Job Titles</span>
   </a>
 

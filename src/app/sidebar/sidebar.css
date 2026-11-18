@@ -1,7 +1,8 @@
 :host {
   display: block;
   height: 100%;
-  background-color: #f5f7fb;
+  background-color: #eae2f5;
+  overflow: hidden;
 }
 
 mat-nav-list {
@@ -11,4 +12,45 @@ mat-nav-list {
 .active-link {
   background-color: #dbeafe !important;
   border-radius: 8px;
+}
+
+/* Sidebar Icons */
+.sidebar-nav a mat-icon {
+  color: #7952b3 !important;
+}
+
+/* Sidebar Text */
+.sidebar-nav a .mdc-list-item__primary-text {
+  color: #49307e !important;
+}
+
+/* Active Link */
+.sidebar-nav a.active-link {
+  background-color: #eee5f8 !important;
+}
+
+/* Active Link Icon */
+.sidebar-nav a.active-link mat-icon {
+  color: #603a97 !important;
+}
+
+/* Active Link Text */
+.sidebar-nav a.active-link .mdc-list-item__primary-text {
+  color: #603a97 !important;
+}
+
+/* Hover */
+.sidebar-nav a:hover {
+  background-color: #f4effa !important;
+}
+
+/* Sidebar Hover */
+.sidebar-nav a:hover {
+  background-color: #ddd0ef !important;
+}
+
+/* Active Link */
+.sidebar-nav a.active-link {
+  background-color: #d3c1e9 !important;
+  border-radius: 12px !important;
 }

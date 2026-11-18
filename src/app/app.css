@@ -1,9 +1,17 @@
+/* =========================
+   General Layout
+========================= */
+
 :host {
   display: block;
   min-height: 100vh;
   background-color: #f4f5fb;
-  font-family: Arial, sans-serif;
+  font-family: 'Roboto', Arial, sans-serif;
 }
+
+/* =========================
+   App Layout
+========================= */
 
 .app-layout {
   display: flex;
@@ -11,30 +19,61 @@
   min-height: 100vh;
 }
 
+/* =========================
+   Sidenav Container
+========================= */
+
 mat-sidenav-container {
   flex: 1;
+  background-color: #f4f5fb;
 }
 
+/* =========================
+   Sidebar
+========================= */
+
 mat-sidenav {
-  width: 240px;
+  width: 72px !important;
+
+  background-color: #ffffff;
+
+  border-right: 1px solid #eee8f5;
+
+  overflow: hidden;
+
+  transition: width 0.3s ease !important;
 }
+
+/* =========================
+   Sidebar Hover
+========================= */
+
+mat-sidenav:hover {
+  width: 240px !important;
+}
+
+/* =========================
+   Main Content
+========================= */
 
 mat-sidenav-content {
   padding: 24px;
+  background-color: #f4f5fb;
 }
 
-mat-sidenav {
-  width: 240px;
-}
+/* =========================
+   Container
+========================= */
 
-mat-sidenav-content {
-  padding: 24px;
-}
 .container {
   max-width: 1200px;
   margin: auto;
   padding: 30px;
 }
+
+/* =========================
+   Header
+========================= */
 
 header {
   text-align: center;
@@ -49,4 +88,24 @@ header h1 {
 header p {
   color: #777;
   font-size: 16px;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 768px) {
+
+  mat-sidenav {
+    width: 64px !important;
+  }
+
+  mat-sidenav:hover {
+    width: 200px !important;
+  }
+
+  mat-sidenav-content {
+    padding: 12px;
+  }
+
 }

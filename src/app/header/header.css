@@ -1,0 +1,158 @@
+/* =========================
+   Main Header
+========================= */
+
+.app-header {
+  height: 85px;
+  padding: 0 35px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: #ffffff;
+  border-bottom: 1px solid #eee8f5;
+
+  box-shadow: 0 3px 12px rgba(73, 48, 126, 0.05);
+}
+
+
+/* =========================
+   Brand
+========================= */
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+
+/* =========================
+   Logo
+========================= */
+
+.header-logo {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(135deg, #7952b3, #49307e);
+  border-radius: 14px;
+
+  box-shadow: 0 4px 12px rgba(121, 82, 179, 0.2);
+}
+
+.header-logo mat-icon {
+  color: #ffffff;
+  font-size: 27px;
+  width: 27px;
+  height: 27px;
+}
+
+
+/* =========================
+   Header Text
+========================= */
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.header-text h1 {
+  margin: 0;
+
+  color: #49307e;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.header-text span {
+  color: #888;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+
+/* =========================
+   Right Section
+========================= */
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.system-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 9px 15px;
+
+  background-color: #f4effa;
+  color: #603a97;
+
+  border-radius: 20px;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.system-badge mat-icon {
+  font-size: 17px;
+  width: 17px;
+  height: 17px;
+  color: #7952b3;
+}
+
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 768px) {
+
+  .app-header {
+    height: 75px;
+    padding: 0 18px;
+  }
+
+  .header-logo {
+    width: 42px;
+    height: 42px;
+  }
+
+  .header-text h1 {
+    font-size: 17px;
+  }
+
+  .header-text span {
+    font-size: 11px;
+  }
+
+  .system-badge {
+    display: none;
+  }
+
+}
+
+@media (max-width: 400px) {
+
+  .header-text h1 {
+    font-size: 15px;
+  }
+
+  .header-logo {
+    width: 38px;
+    height: 38px;
+  }
+
+}

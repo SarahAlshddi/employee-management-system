@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
-
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  imports: [MatToolbarModule],
   selector: 'app-header',
-  styleUrl: './header.css',
+  imports: [
+    MatToolbarModule,
+    MatIconModule
+  ],
   templateUrl: './header.html',
+  styleUrl: './header.css'
 })
 export class Header {}

@@ -1,139 +1,182 @@
 <div class="department-container">
 
-  <!-- Header -->
-  <div class="departments-header">
+  <section class="list-section">
 
-    <h2>Departments</h2>
+    <!-- Header -->
+    <div class="departments-header">
 
-    <button
-      matButton="filled"
-      type="button"
-      (click)="openAddDialog()"
-    >
-      <mat-icon>add</mat-icon>
-      Add Department
-    </button>
+      <div class="header-info">
+        <h2>Departments</h2>
 
-  </div>
+        <p class="department-count">
+          Total Departments: {{ departmentsList().length }}
+        </p>
+      </div>
 
-  <!-- Total Count -->
-  <p>
-    Total Departments: {{ departmentsList().length }}
-  </p>
+      <button
+        matButton="filled"
+        class="add-button"
+        type="button"
+        (click)="openAddDialog()"
+      >
+        <mat-icon>add</mat-icon>
+        Add Department
+      </button>
 
-  <!-- Search -->
-  <mat-form-field appearance="outline">
+    </div>
 
-    <mat-label>Search Departments</mat-label>
+    <!-- Search -->
+    <div class="search-container">
 
-    <mat-icon matPrefix>search</mat-icon>
+      <mat-form-field
+        appearance="outline"
+        class="search-field"
+      >
 
-    <input
-      matInput
-      type="text"
-      placeholder="Search by name or description"
-      (input)="applyFilter($event)"
-    />
+        <mat-label>Search Departments</mat-label>
 
-  </mat-form-field>
+        <mat-icon matPrefix>search</mat-icon>
 
-  <!-- Table -->
-  <table mat-table [dataSource]="dataSource">
+        <input
+          matInput
+          type="text"
+          placeholder="Search by name or description"
+          (input)="applyFilter($event)"
+        />
 
-    <!-- ID Column -->
-    <ng-container matColumnDef="id">
+      </mat-form-field>
 
-      <th mat-header-cell *matHeaderCellDef>ID</th>
+    </div>
 
-      <td mat-cell *matCellDef="let department">
-        {{ department.id }}
-      </td>
+    <!-- Table -->
+    <div class="table-container">
 
-    </ng-container>
+      <table mat-table [dataSource]="dataSource">
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
 
-      <th mat-header-cell *matHeaderCellDef>
-        Department Name
-      </th>
+          <th mat-header-cell *matHeaderCellDef>
+            ID
+          </th>
 
-      <td mat-cell *matCellDef="let department">
-        {{ department.name }}
-      </td>
+          <td mat-cell *matCellDef="let department">
+            {{ department.id }}
+          </td>
 
-    </ng-container>
+        </ng-container>
 
-    <!-- Description Column -->
-    <ng-container matColumnDef="description">
+        <!-- Department Name Column -->
+        <ng-container matColumnDef="name">
 
-      <th mat-header-cell *matHeaderCellDef>
-        Description
-      </th>
+          <th mat-header-cell *matHeaderCellDef>
+            Department Name
+          </th>
 
-      <td mat-cell *matCellDef="let department">
-        {{ department.description }}
-      </td>
+          <td mat-cell *matCellDef="let department">
+            {{ department.name }}
+          </td>
 
-    </ng-container>
-<!-- Employees Count -->
-<ng-container matColumnDef="employeesCount">
-  <th mat-header-cell *matHeaderCellDef>Employees</th>
+        </ng-container>
 
-  <td mat-cell *matCellDef="let department">
-    {{ employeeCounts().get(department.id) ?? 0 }}
-  </td>
-</ng-container>
-    <!-- Actions Column -->
-    <ng-container matColumnDef="actions">
+        <!-- Description Column -->
+        <ng-container matColumnDef="description">
 
-      <th mat-header-cell *matHeaderCellDef>
-        Actions
-      </th>
+          <th mat-header-cell *matHeaderCellDef>
+            Description
+          </th>
 
-      <td mat-cell *matCellDef="let department">
+          <td mat-cell *matCellDef="let department">
+            {{ department.description }}
+          </td>
 
-        <button
-          matIconButton
-          type="button"
-          aria-label="Edit department"
-          (click)="editDepartment(department)"
-        >
-          <mat-icon>edit</mat-icon>
-        </button>
+        </ng-container>
 
-        <button
-          matIconButton
-          type="button"
-          aria-label="Delete department"
-          (click)="deleteDepartment(department)"
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
+        <!-- Employees Count Column -->
+        <ng-container matColumnDef="employeesCount">
 
-      </td>
+          <th mat-header-cell *matHeaderCellDef>
+            Employees
+          </th>
 
-    </ng-container>
+          <td mat-cell *matCellDef="let department">
+            {{ employeeCounts().get(department.id) ?? 0 }}
+          </td>
 
-    <!-- Rows -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        </ng-container>
 
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
 
-    <!-- Empty State -->
-    <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" [attr.colspan]="displayedColumns.length">
-        No departments found.
-      </td>
-    </tr>
+          <th mat-header-cell *matHeaderCellDef>
+            Actions
+          </th>
 
-  </table>
+          <td mat-cell *matCellDef="let department">
 
-  <!-- Pagination -->
-  <mat-paginator
-    [pageSize]="5"
-    [pageSizeOptions]="[5, 10, 20]"
-    showFirstLastButtons>
-  </mat-paginator>
+            <div class="action-buttons">
+
+              <!-- Edit Button -->
+              <button
+                matIconButton
+                class="edit-button"
+                type="button"
+                aria-label="Edit department"
+                (click)="editDepartment(department)"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+
+              <!-- Delete Button -->
+              <button
+                matIconButton
+                class="delete-button"
+                type="button"
+                aria-label="Delete department"
+                (click)="deleteDepartment(department)"
+              >
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+
+            </div>
+
+          </td>
+
+        </ng-container>
+
+        <!-- Header Row -->
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns">
+        </tr>
+
+        <!-- Data Rows -->
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns">
+        </tr>
+
+        <!-- Empty State -->
+        <tr class="mat-row" *matNoDataRow>
+          <td
+            class="mat-cell empty-message"
+            [attr.colspan]="displayedColumns.length"
+          >
+            No departments found.
+          </td>
+        </tr>
+
+      </table>
+
+    </div>
+
+    <!-- Paginator -->
+    <mat-paginator
+      [pageSize]="5"
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons>
+    </mat-paginator>
+
+  </section>
 
 </div>

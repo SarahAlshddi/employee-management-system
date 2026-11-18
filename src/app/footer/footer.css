@@ -8,3 +8,14 @@
 .footer p {
   margin: 0;
 }
+
+:host {
+  display: block;
+  background-color: #eae2f5;
+  border-top: 1px solid #d8c8eb;
+}
+
+mat-toolbar {
+  background-color: #eae2f5 !important;
+  color: #49307e;
+}

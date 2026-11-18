@@ -1,149 +1,189 @@
 <div class="job-titles-container">
 
-  <!-- Header -->
-  <div class="job-titles-header">
+  <section class="list-section">
 
-    <h2>Job Titles</h2>
+    <!-- Header -->
+    <div class="job-titles-header">
 
-    <button
-      matButton="filled"
-      type="button"
-      (click)="openAddDialog()"
-    >
-      <mat-icon>add</mat-icon>
-      Add Job Title
-    </button>
+      <div class="header-info">
+        <h2>Job Titles</h2>
 
-  </div>
+        <p class="job-titles-count">
+          Total Job Titles: {{ jobTitlesList().length }}
+        </p>
+      </div>
 
-  <p>Total Job Titles: {{ jobTitlesList().length }}</p>
+      <button
+        matButton="filled"
+        class="add-button"
+        type="button"
+        (click)="openAddDialog()"
+      >
+        <mat-icon>add</mat-icon>
+        Add Job Title
+      </button>
 
-  <!-- Filters -->
-  <div class="filters">
+    </div>
 
-    <!-- Search -->
-    <mat-form-field appearance="outline">
+    <!-- Filters -->
+    <div class="filters">
 
-      <mat-label>Search Job Titles</mat-label>
-
-      <mat-icon matPrefix>search</mat-icon>
-
-      <input
-        matInput
-        type="text"
-        placeholder="Search by title or description"
-        (input)="applySearch($event)"
-      />
-
-    </mat-form-field>
-
-    <!-- Department Filter -->
-    <mat-form-field appearance="outline">
-
-      <mat-label>Filter by Department</mat-label>
-
-      <mat-select
-        [value]="selectedDepartment"
-        (selectionChange)="filterByDepartment($event.value)"
+      <!-- Search -->
+      <mat-form-field
+        appearance="outline"
+        class="filter-field"
       >
 
-        <mat-option [value]="null">
-          All Departments
-        </mat-option>
+        <mat-label>Search Job Titles</mat-label>
 
-        @for (department of departmentsList(); track department.id) {
-          <mat-option [value]="department.id">
-            {{ department.name }}
+        <mat-icon matPrefix>search</mat-icon>
+
+        <input
+          matInput
+          type="text"
+          placeholder="Search by title or description"
+          (input)="applySearch($event)"
+        />
+
+      </mat-form-field>
+
+      <!-- Department Filter -->
+      <mat-form-field
+        appearance="outline"
+        class="filter-field"
+      >
+
+        <mat-label>Filter by Department</mat-label>
+
+        <mat-select
+          [value]="selectedDepartment"
+          (selectionChange)="filterByDepartment($event.value)"
+        >
+
+          <mat-option [value]="null">
+            All Departments
           </mat-option>
-        }
 
-      </mat-select>
+          @for (department of departmentsList(); track department.id) {
+            <mat-option [value]="department.id">
+              {{ department.name }}
+            </mat-option>
+          }
 
-    </mat-form-field>
+        </mat-select>
 
-  </div>
+      </mat-form-field>
 
-  <!-- Table -->
-  <table mat-table [dataSource]="dataSource">
+    </div>
 
-    <!-- ID -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td mat-cell *matCellDef="let job">
-        {{ job.id }}
-      </td>
-    </ng-container>
+    <!-- Table -->
+    <div class="table-container">
 
-    <!-- Job Title -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Job Title</th>
-      <td mat-cell *matCellDef="let job">
-        {{ job.name }}
-      </td>
-    </ng-container>
+      <table mat-table [dataSource]="dataSource">
 
-    <!-- Department -->
-    <ng-container matColumnDef="department">
-      <th mat-header-cell *matHeaderCellDef>Department</th>
-      <td mat-cell *matCellDef="let job">
-        {{ getDepartmentName(job.departmentId) }}
-      </td>
-    </ng-container>
+        <!-- ID -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let job">
+            {{ job.id }}
+          </td>
+        </ng-container>
 
-    <!-- Description -->
-    <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef>Description</th>
-      <td mat-cell *matCellDef="let job">
-        {{ job.description }}
-      </td>
-    </ng-container>
+        <!-- Job Title -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Job Title</th>
+          <td mat-cell *matCellDef="let job">
+            {{ job.name }}
+          </td>
+        </ng-container>
 
-    <!-- Actions -->
-    <ng-container matColumnDef="actions">
+        <!-- Department -->
+        <ng-container matColumnDef="department">
+          <th mat-header-cell *matHeaderCellDef>Department</th>
+          <td mat-cell *matCellDef="let job">
+            {{ getDepartmentName(job.departmentId) }}
+          </td>
+        </ng-container>
 
-      <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <!-- Description -->
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let job">
+            {{ job.description }}
+          </td>
+        </ng-container>
 
-      <td mat-cell *matCellDef="let job">
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
 
-        <button
-          matIconButton
-          type="button"
-          aria-label="Edit job title"
-          (click)="editJobTitle(job)"
-        >
-          <mat-icon>edit</mat-icon>
-        </button>
+          <th mat-header-cell *matHeaderCellDef>
+            Actions
+          </th>
 
-        <button
-          matIconButton
-          type="button"
-          aria-label="Delete job title"
-          (click)="deleteJobTitle(job)"
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
+          <td mat-cell *matCellDef="let job">
 
-      </td>
-    </ng-container>
+            <div class="action-buttons">
 
-    <!-- Rows -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              <!-- Edit -->
+              <button
+                matIconButton
+                class="edit-button"
+                type="button"
+                aria-label="Edit job title"
+                (click)="editJobTitle(job)"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
 
-    <!-- Empty State -->
-    <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" [attr.colspan]="displayedColumns.length">
-        No job titles found.
-      </td>
-    </tr>
+              <!-- Delete -->
+              <button
+                matIconButton
+                class="delete-button"
+                type="button"
+                aria-label="Delete job title"
+                (click)="deleteJobTitle(job)"
+              >
+                <mat-icon>delete_outline</mat-icon>
+              </button>
 
-  </table>
+            </div>
 
-  <!-- Pagination -->
-  <mat-paginator
-    [pageSize]="5"
-    [pageSizeOptions]="[5, 10, 20]"
-    showFirstLastButtons>
-  </mat-paginator>
+          </td>
+        </ng-container>
+
+        <!-- Header Row -->
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns">
+        </tr>
+
+        <!-- Data Rows -->
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns">
+        </tr>
+
+        <!-- Empty State -->
+        <tr class="mat-row" *matNoDataRow>
+          <td
+            class="mat-cell empty-message"
+            [attr.colspan]="displayedColumns.length"
+          >
+            No job titles found.
+          </td>
+        </tr>
+
+      </table>
+
+    </div>
+
+    <!-- Paginator -->
+    <mat-paginator
+      [pageSize]="5"
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons>
+    </mat-paginator>
+
+  </section>
 
 </div>
