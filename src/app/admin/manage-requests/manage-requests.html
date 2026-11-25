@@ -1,0 +1,109 @@
+<div class="management-container">
+
+  <a mat-button routerLink="/admin" class="back-button">
+    <mat-icon>arrow_back</mat-icon>
+    Back to Dashboard
+  </a>
+
+  <div class="page-header">
+    <h2>Manage Requests</h2>
+    <p>Review employee leave and loan requests.</p>
+  </div>
+
+  <mat-card class="management-card">
+
+    <mat-card-header>
+      <mat-card-title>Employee Requests</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <div class="table-container">
+
+        <table class="management-table">
+
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Type</th>
+              <th>Reason</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            @for (request of requestService.requests(); track request.id) {
+
+              <tr>
+
+                <td>{{ getUsername(request.userId) }}</td>
+                <td>{{ request.type }}</td>
+                <td>{{ request.reason }}</td>
+                <td>{{ request.createdAt | date:'mediumDate' }}</td>
+
+                <td>
+                  <span
+                    class="status"
+                    [class.pending]="request.status === 'Pending'"
+                    [class.approved]="request.status === 'Approved'"
+                    [class.rejected]="request.status === 'Rejected'">
+
+                    {{ request.status }}
+
+                  </span>
+                </td>
+
+                <td>
+
+                  @if (request.status === 'Pending') {
+
+                    <div class="request-actions">
+
+                      <button
+                        mat-flat-button
+                        type="button"
+                        (click)="approve(request.id)">
+                        Approve
+                      </button>
+
+                      <button
+                        mat-stroked-button
+                        type="button"
+                        (click)="reject(request.id)">
+                        Reject
+                      </button>
+
+                    </div>
+
+                  } @else {
+                    <span class="completed-text">Completed</span>
+                  }
+
+                </td>
+
+              </tr>
+
+            } @empty {
+
+              <tr>
+                <td colspan="6" class="empty-state">
+                  No requests found
+                </td>
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </mat-card-content>
+
+  </mat-card>
+
+</div>

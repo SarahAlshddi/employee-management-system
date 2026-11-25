@@ -100,9 +100,11 @@ export class JobTitleList {
       const departmentName = this.getDepartmentName(job.departmentId);
 
       const searchableText = (
+        job.id + ' ' +
         job.name + ' ' +
         job.description + ' ' +
         departmentName
+        
       ).toLowerCase();
 
       const matchesSearch =

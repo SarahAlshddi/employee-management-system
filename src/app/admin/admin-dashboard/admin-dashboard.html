@@ -1,0 +1,63 @@
+<div class="dashboard-container">
+
+  <div class="dashboard-header">
+    <h2>Admin Dashboard</h2>
+    <p>Select a section to manage your system.</p>
+  </div>
+
+  <div class="dashboard-grid">
+
+    @if (auth.hasPermission('manage-users')) {
+      <mat-card class="dashboard-card">
+
+        <mat-icon>groups</mat-icon>
+
+        <h3>Manage Users</h3>
+
+        <p>Add, delete, and manage user accounts and their roles.</p>
+
+        <a mat-flat-button routerLink="/admin/users">
+          Open Section
+          <mat-icon>arrow_forward</mat-icon>
+        </a>
+
+      </mat-card>
+    }
+
+    @if (auth.hasPermission('manage-roles')) {
+      <mat-card class="dashboard-card">
+
+        <mat-icon>admin_panel_settings</mat-icon>
+
+        <h3>Manage Roles</h3>
+
+        <p>Create roles and assign permissions to users.</p>
+
+        <a mat-flat-button routerLink="/admin/roles">
+          Open Section
+          <mat-icon>arrow_forward</mat-icon>
+        </a>
+
+      </mat-card>
+    }
+
+    @if (auth.hasPermission('approve-request')) {
+      <mat-card class="dashboard-card">
+
+        <mat-icon>assignment_turned_in</mat-icon>
+
+        <h3>Manage Requests</h3>
+
+        <p>Review employee requests and approve or reject them.</p>
+
+        <a mat-flat-button routerLink="/admin/requests">
+          Open Section
+          <mat-icon>arrow_forward</mat-icon>
+        </a>
+
+      </mat-card>
+    }
+
+  </div>
+
+</div>

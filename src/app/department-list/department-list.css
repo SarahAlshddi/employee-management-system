@@ -15,10 +15,10 @@
 ========================= */
 
 .list-section {
-  background-color: #ffffff;
+  background-color: var(--app-surface);
   padding: 30px;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(73, 48, 126, 0.08);
+  box-shadow: var(--app-card-shadow);
 }
 
 
@@ -36,7 +36,7 @@
 
 .header-info h2 {
   margin: 0 0 8px;
-  color: #49307e;
+  color: var(--app-primary-dark);
   font-size: 26px;
   font-weight: 700;
   letter-spacing: 0.3px;
@@ -49,7 +49,7 @@
 
 .department-count {
   margin: 0;
-  color: #888;
+  color: var(--app-text-muted);
   font-size: 14px;
   font-weight: 400;
 }
@@ -60,10 +60,9 @@
 ========================= */
 
 .add-button {
-  --mdc-filled-button-container-color: #7952b3;
-  --mdc-filled-button-label-text-color: #ffffff;
-
-  --mat-filled-button-state-layer-color: #ffffff;
+  --mdc-filled-button-container-color: var(--app-primary);
+  --mdc-filled-button-label-text-color: var(--mat-sys-on-primary);
+  --mat-filled-button-state-layer-color: var(--mat-sys-on-primary);
 
   border-radius: 10px !important;
   padding: 12px 22px !important;
@@ -76,10 +75,10 @@
 }
 
 .add-button:hover {
-  --mdc-filled-button-container-color: #603a97;
+  --mdc-filled-button-container-color: var(--app-primary-hover);
 
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(121, 82, 179, 0.25);
+  box-shadow: var(--app-button-shadow);
 }
 
 .add-button mat-icon {
@@ -104,17 +103,15 @@
   width: 100%;
   max-width: 400px;
 
-  --mdc-outlined-text-field-outline-color: #ded4eb;
-  --mdc-outlined-text-field-hover-outline-color: #7952b3;
-  --mdc-outlined-text-field-focus-outline-color: #7952b3;
-
-  --mdc-outlined-text-field-focus-label-text-color: #7952b3;
-
-  --mdc-outlined-text-field-input-text-color: #49307e;
+  --mdc-outlined-text-field-outline-color: var(--app-input-border);
+  --mdc-outlined-text-field-hover-outline-color: var(--app-primary);
+  --mdc-outlined-text-field-focus-outline-color: var(--app-primary);
+  --mdc-outlined-text-field-focus-label-text-color: var(--app-primary);
+  --mdc-outlined-text-field-input-text-color: var(--app-primary-dark);
 }
 
 .search-field mat-icon {
-  color: #7952b3;
+  color: var(--app-primary);
   margin-right: 8px;
 }
 
@@ -128,7 +125,7 @@
   overflow-x: auto;
 
   border-radius: 12px;
-  border: 1px solid #eee8f5;
+  border: 1px solid var(--app-border-light);
 }
 
 
@@ -140,7 +137,7 @@ table {
   width: 100%;
   min-width: 700px;
 
-  background-color: #ffffff;
+  background-color: var(--app-surface);
   border-collapse: collapse;
 }
 
@@ -150,8 +147,8 @@ table {
 ========================= */
 
 th.mat-mdc-header-cell {
-  background-color: #f4effa;
-  color: #49307e;
+  background-color: var(--app-table-header);
+  color: var(--app-primary-dark);
 
   font-size: 14px;
   font-weight: 700;
@@ -159,7 +156,7 @@ th.mat-mdc-header-cell {
   padding: 18px 16px;
   height: 58px;
 
-  border-bottom: 2px solid #e8def3;
+  border-bottom: 2px solid var(--app-border-purple);
 }
 
 
@@ -168,7 +165,7 @@ th.mat-mdc-header-cell {
 ========================= */
 
 td.mat-mdc-cell {
-  color: #4b4655;
+  color: var(--app-text-secondary);
 
   font-size: 14px;
   font-weight: 400;
@@ -176,7 +173,7 @@ td.mat-mdc-cell {
   padding: 16px;
   height: 65px;
 
-  border-bottom: 1px solid #f0edf5;
+  border-bottom: 1px solid var(--app-border-subtle);
 }
 
 
@@ -189,7 +186,7 @@ tr.mat-mdc-row {
 }
 
 tr.mat-mdc-row:hover {
-  background-color: #f8f5fc;
+  background-color: var(--app-row-hover);
 }
 
 tr.mat-mdc-row:last-child td {
@@ -213,8 +210,8 @@ tr.mat-mdc-row:last-child td {
 ========================= */
 
 .edit-button {
-  color: #7952b3 !important;
-  background-color: #f0e9fa !important;
+  color: var(--app-primary) !important;
+  background-color: var(--app-edit-background) !important;
 
   border-radius: 10px !important;
 
@@ -222,7 +219,7 @@ tr.mat-mdc-row:last-child td {
 }
 
 .edit-button:hover {
-  background-color: #e4d6f5 !important;
+  background-color: var(--app-edit-hover) !important;
   transform: scale(1.08);
 }
 
@@ -232,8 +229,8 @@ tr.mat-mdc-row:last-child td {
 ========================= */
 
 .delete-button {
-  color: #d9534f !important;
-  background-color: #fdeeee !important;
+  color: var(--app-danger) !important;
+  background-color: var(--app-danger-background) !important;
 
   border-radius: 10px !important;
 
@@ -241,7 +238,7 @@ tr.mat-mdc-row:last-child td {
 }
 
 .delete-button:hover {
-  background-color: #fbdada !important;
+  background-color: var(--app-danger-hover) !important;
   transform: scale(1.08);
 }
 
@@ -263,7 +260,8 @@ tr.mat-mdc-row:last-child td {
 
 .empty-message {
   text-align: center;
-  color: #888;
+  color: var(--app-text-muted);
+
   padding: 30px;
   font-size: 14px;
 }
@@ -274,8 +272,8 @@ tr.mat-mdc-row:last-child td {
 ========================= */
 
 mat-paginator {
-  background-color: #ffffff;
-  color: #666;
+  background-color: var(--app-surface);
+  color: var(--app-text-muted);
 
   margin-top: 15px;
   border-radius: 10px;

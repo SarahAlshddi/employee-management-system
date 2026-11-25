@@ -1,19 +1,26 @@
 import { Component, inject } from '@angular/core';
-import type { Employee } from './employee-list/employee.model';
-import { Header } from './header/header';
+import { RouterOutlet } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
+
+import { Header } from './header/header';
 import { Sidebar } from './sidebar/sidebar';
 import { Footer } from './footer/footer';
-import { EmployeeService } from './services/employee';
-import { RouterOutlet } from '@angular/router';
+import { Auth } from './auth/auth';
 
 @Component({
   selector: 'app-root',
-  imports: [Header,MatSidenavModule,Sidebar,Footer,RouterOutlet],
+  imports: [
+    RouterOutlet,
+    MatSidenavModule,
+    Header,
+    Sidebar,
+    Footer
+  ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
 
+  auth = inject(Auth);
 
 }

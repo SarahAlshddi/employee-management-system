@@ -1,19 +1,11 @@
 import { Component, inject, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
-import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogModule
-} from '@angular/material/dialog';
-
+import {MAT_DIALOG_DATA,MatDialogRef,MatDialogModule} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-
 import type { Employee } from '../employee-list/employee.model';
-
 import { DepartmentService } from '../services/department';
 import { JobTitleService } from '../services/job-title';
 

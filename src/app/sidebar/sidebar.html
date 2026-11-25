@@ -1,39 +1,71 @@
 <mat-nav-list class="sidebar-nav">
 
+  <!-- Admin Dashboard -->
+  @if (auth.hasPermission('approve-request')) {
+    <a
+      mat-list-item
+      routerLink="/admin"
+      routerLinkActive="active-link"
+    >
+      <mat-icon matListItemIcon>admin_panel_settings</mat-icon>
+      <span matListItemTitle>Admin Dashboard</span>
+    </a>
+  }
+
   <!-- Employees -->
-  <a
-    mat-list-item
-    routerLink="/employees"
-    routerLinkActive="active-link"
-    matTooltip="Employees"
-    matTooltipPosition="right"
-  >
-    <mat-icon matListItemIcon>people_outline</mat-icon>
-    <span matListItemTitle>Employees</span>
-  </a>
+  @if (auth.isAdmin()) {
+    <a
+      mat-list-item
+      routerLink="/employees"
+      routerLinkActive="active-link"
+    >
+      <mat-icon matListItemIcon>people_outline</mat-icon>
+      <span matListItemTitle>Employees</span>
+    </a>
 
-  <!-- Departments -->
-  <a
-    mat-list-item
-    routerLink="/departments"
-    routerLinkActive="active-link"
-    matTooltip="Departments"
-    matTooltipPosition="right"
-  >
-    <mat-icon matListItemIcon>business</mat-icon>
-    <span matListItemTitle>Departments</span>
-  </a>
+    <!-- Departments -->
+    <a
+      mat-list-item
+      routerLink="/departments"
+      routerLinkActive="active-link"
+    >
+      <mat-icon matListItemIcon>business</mat-icon>
+      <span matListItemTitle>Departments</span>
+    </a>
 
-  <!-- Job Titles -->
-  <a
-    mat-list-item
-    routerLink="/job-titles"
-    routerLinkActive="active-link"
-    matTooltip="Job Titles"
-    matTooltipPosition="right"
-  >
-    <mat-icon matListItemIcon>work_outline</mat-icon>
-    <span matListItemTitle>Job Titles</span>
-  </a>
+    <!-- Job Titles -->
+    <a
+      mat-list-item
+      routerLink="/job-titles"
+      routerLinkActive="active-link"
+    >
+      <mat-icon matListItemIcon>work_outline</mat-icon>
+      <span matListItemTitle>Job Titles</span>
+    </a>
+  }
+
+  <!-- My Requests -->
+  @if (auth.hasPermission('create-request')) {
+    <a
+      mat-list-item
+      routerLink="/requests"
+      routerLinkActive="active-link"
+    >
+      <mat-icon matListItemIcon>description</mat-icon>
+      <span matListItemTitle>My Requests</span>
+    </a>
+  }
+
+  <!-- Logout -->
+  @if (auth.isLoggedIn()) {
+    <button
+      mat-list-item
+      type="button"
+      (click)="logout()"
+    >
+      <mat-icon matListItemIcon>logout</mat-icon>
+      <span matListItemTitle>Logout</span>
+    </button>
+  }
 
 </mat-nav-list>

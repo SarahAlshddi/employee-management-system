@@ -5,7 +5,7 @@
 :host {
   display: block;
   min-height: 100vh;
-  background-color: #f4f5fb;
+  background-color: var(--app-background);
   font-family: 'Roboto', Arial, sans-serif;
 }
 
@@ -25,7 +25,7 @@
 
 mat-sidenav-container {
   flex: 1;
-  background-color: #f4f5fb;
+  background-color: var(--app-background);
 }
 
 /* =========================
@@ -35,9 +35,9 @@ mat-sidenav-container {
 mat-sidenav {
   width: 72px !important;
 
-  background-color: #ffffff;
+  background-color: var(--app-sidebar-background) !important;
 
-  border-right: 1px solid #eee8f5;
+  border-right: 1px solid var(--app-sidebar-border);
 
   overflow: hidden;
 
@@ -58,7 +58,7 @@ mat-sidenav:hover {
 
 mat-sidenav-content {
   padding: 24px;
-  background-color: #f4f5fb;
+  background-color: var(--app-background);
 }
 
 /* =========================
@@ -81,12 +81,12 @@ header {
 }
 
 header h1 {
-  color: #49307e;
+  color: var(--app-primary-dark);
   font-size: 32px;
 }
 
 header p {
-  color: #777;
+  color: var(--app-header-text-muted);
   font-size: 16px;
 }
 
@@ -97,15 +97,11 @@ header p {
 @media (max-width: 768px) {
 
   mat-sidenav {
-    width: 64px !important;
+    width: 72px !important;
   }
 
   mat-sidenav:hover {
-    width: 200px !important;
-  }
-
-  mat-sidenav-content {
-    padding: 12px;
+    width: 240px !important;
   }
 
 }

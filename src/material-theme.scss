@@ -6,29 +6,31 @@
 
 html {
   height: 100%;
-
   color-scheme: light;
 
-  @include mat.theme(
-    (
-      color: (
-        primary: mat.$violet-palette,
-        tertiary: mat.$violet-palette,
-      ),
-      typography: Roboto,
-      density: 0,
-    )
-  );
+  @include mat.theme((
+    color: (
+      primary: mat.$violet-palette,
+      tertiary: mat.$violet-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
 
-  /* Custom Project Colors */
+  /* =========================
+     Material Color Overrides
+  ========================= */
+
   @include mat.theme-overrides((
     primary: #7952b3,
     on-primary: #ffffff,
+
     primary-container: #eee5f8,
     on-primary-container: #49307e,
 
     secondary: #7952b3,
     on-secondary: #ffffff,
+
     secondary-container: #eee5f8,
     on-secondary-container: #49307e,
 
@@ -36,8 +38,73 @@ html {
     on-tertiary: #ffffff,
 
     surface: #ffffff,
-    background: #f4f5fb,
   ));
+
+  /* =========================
+     Primary Colors
+  ========================= */
+
+  --app-primary: var(--mat-sys-primary);
+  --app-primary-dark: var(--mat-sys-on-primary-container);
+  --app-primary-light: var(--mat-sys-primary-container);
+  --app-primary-hover: #603a97;
+
+  /* =========================
+     Background Colors
+  ========================= */
+
+  --app-background: #f4f5fb;
+  --app-surface: var(--mat-sys-surface);
+
+  --app-table-header: #f4effa;
+
+  /* More visible table row hover */
+  --app-row-hover: #eae0f5;
+
+  /* =========================
+     Text Colors
+  ========================= */
+
+  --app-text: var(--mat-sys-on-surface);
+  --app-text-secondary: #4b4655;
+  --app-text-muted: #888888;
+  --app-header-text-muted: #777777;
+
+  /* =========================
+     Border Colors
+  ========================= */
+
+  --app-border: #e5e0eb;
+  --app-border-light: #eee8f5;
+  --app-border-subtle: #f0edf5;
+  --app-border-purple: #e8def3;
+  --app-input-border: #ded4eb;
+
+  /* =========================
+     Action Button Colors
+  ========================= */
+
+  --app-edit-background: #f0e9fa;
+  --app-edit-hover: #e4d6f5;
+
+  --app-danger: #d9534f;
+  --app-danger-background: #fdeeee;
+  --app-danger-hover: #fbdada;
+
+  /* =========================
+     Sidebar Colors
+  ========================= */
+
+  --app-sidebar-background: #eae2f5;
+  --app-sidebar-border: #d8c8eb;
+
+  /* =========================
+     Shadows
+  ========================= */
+
+  --app-card-shadow: 0 4px 20px rgba(73, 48, 126, 0.08);
+
+  --app-button-shadow: 0 5px 15px rgba(121, 82, 179, 0.25);
 }
 
 /* =========================
@@ -47,7 +114,9 @@ html {
 body {
   margin: 0;
   min-height: 100%;
-  background-color: #f4f5fb;
-  color: var(--mat-sys-on-surface);
+
+  background-color: var(--app-background);
+  color: var(--app-text);
+
   font: var(--mat-sys-body-medium);
 }

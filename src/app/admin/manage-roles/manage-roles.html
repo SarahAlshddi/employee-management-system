@@ -1,0 +1,101 @@
+<div class="management-container">
+
+  <a mat-button routerLink="/admin" class="back-button">
+    <mat-icon>arrow_back</mat-icon>
+    Back to Dashboard
+  </a>
+
+  <div class="page-header">
+    <h2>Manage Roles & Permissions</h2>
+    <p>Create roles and manage access permissions.</p>
+  </div>
+
+  <mat-card class="management-card">
+
+    <mat-card-header>
+      <mat-card-title>Create New Role</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <form class="role-form" (ngSubmit)="addRole()">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Role Name</mat-label>
+          <input
+            matInput
+            name="roleName"
+            [(ngModel)]="newRole"
+            required
+          />
+        </mat-form-field>
+
+        <button mat-flat-button type="submit">
+          <mat-icon>add</mat-icon>
+          Add Role
+        </button>
+
+      </form>
+
+    </mat-card-content>
+
+  </mat-card>
+
+  <div class="roles-grid">
+
+    @for (role of auth.roles(); track role.name) {
+
+      <mat-card class="role-card">
+
+        <div class="role-header">
+
+          <h3>{{ role.name }}</h3>
+
+          @if (role.name !== 'Admin' && role.name !== 'User') {
+
+            <div class="role-actions">
+
+              <button
+                mat-icon-button
+                type="button"
+                (click)="editRole(role.name)">
+                <mat-icon>edit</mat-icon>
+              </button>
+
+              <button
+                mat-icon-button
+                type="button"
+                (click)="deleteRole(role.name)">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+
+            </div>
+
+          }
+
+        </div>
+
+        <div class="permissions-list">
+
+          @for (permission of permissions; track permission) {
+
+            <mat-checkbox
+              [checked]="role.permissions.includes(permission)"
+              [disabled]="role.name === 'Admin'"
+              (change)="togglePermission(role.name, permission)">
+
+              {{ permission }}
+
+            </mat-checkbox>
+
+          }
+
+        </div>
+
+      </mat-card>
+
+    }
+
+  </div>
+
+</div>
