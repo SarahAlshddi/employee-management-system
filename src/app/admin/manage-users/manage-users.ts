@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 import { MatCardModule } from '@angular/material/card';
@@ -33,21 +33,52 @@ export class ManageUsers {
   newUsername = '';
   selectedRole = 'User';
 
-  addUser(): void {
+  editingUserId: number | null = null;
+  editingRole = '';
+
+  addUser(form: NgForm): void {
     const added = this.auth.addUser(
       this.newUsername,
       this.selectedRole
     );
 
     if (added) {
+      alert('User added successfully!');
+
+      form.resetForm({
+        username: '',
+        role: 'User'
+      });
+
       this.newUsername = '';
+      this.selectedRole = 'User';
     } else {
-      alert('Unable to add user. Username may already exist.');
+      alert('Unable to add user.');
     }
   }
 
-  changeRole(userId: number, role: string): void {
-    this.auth.updateUserRole(userId, role);
+  editUser(id: number, role: string): void {
+    this.editingUserId = id;
+    this.editingRole = role;
+  }
+
+  saveUser(id: number): void {
+    if (!this.editingRole) {
+      alert('Please select a role.');
+      return;
+    }
+
+    this.auth.updateUserRole(id, this.editingRole);
+
+    this.editingUserId = null;
+    this.editingRole = '';
+
+    alert('User role updated successfully!');
+  }
+
+  cancelEdit(): void {
+    this.editingUserId = null;
+    this.editingRole = '';
   }
 
   deleteUser(id: number): void {

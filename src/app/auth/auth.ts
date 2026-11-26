@@ -28,12 +28,16 @@ export class Auth {
     }
   ];
 
-  users = signal<User[]>(this.load('users', this.initialUsers));
+  users = signal<User[]>(
+  this.load('users', this.initialUsers) as User[]
+  );
 
-  roles = signal<Role[]>(this.load('roles', this.initialRoles));
+  roles = signal<Role[]>(
+    this.load('roles', this.initialRoles) as Role[]
+  );
 
   private sessionId = signal<number | null>(
-    this.load<number | null>('sessionId', null)
+    this.load('sessionId', null) as number | null
   );
 
   currentUser = computed(
@@ -52,16 +56,21 @@ canAccessDashboard = computed(() =>
   this.hasPermission('approve-request')
 );
 
-  private load<T>(key: string, fallback: T): T {
-    try {
-      const value = localStorage.getItem(key);
-      return value ? JSON.parse(value) as T : fallback;
-    } catch {
-      return fallback;
-    }
-  }
+  private load(key: string, fallback: unknown): unknown {
+  try {
+    const value = localStorage.getItem(key);
 
-  private save<T>(key: string, data: T): void {
+    if (value) {
+      return JSON.parse(value);
+    }
+
+    return fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+  private save(key: string, data: unknown): void {
     localStorage.setItem(key, JSON.stringify(data));
   }
 
@@ -240,18 +249,24 @@ canAccessDashboard = computed(() =>
 }
 
   togglePermission(roleName: string, permission: Permission): void {
-    if (!this.hasPermission('manage-roles')) return;
 
-    // Keep the built-in Admin role intact.
+    if (!this.hasPermission('manage-roles')) return;
     if (roleName === 'Admin') return;
 
     this.roles.update(roles =>
       roles.map(role => {
-        if (role.name !== roleName) return role;
 
-        const permissions = role.permissions.includes(permission)
-          ? role.permissions.filter(p => p !== permission)
-          : [...role.permissions, permission];
+        if (role.name !== roleName) {
+          return role;
+        }
+
+        let permissions = role.permissions;
+
+        if (permissions.includes(permission)) {
+          permissions = permissions.filter(p => p !== permission);
+        } else {
+          permissions = [...permissions, permission];
+        }
 
         return { ...role, permissions };
       })

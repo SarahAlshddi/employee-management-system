@@ -7,27 +7,35 @@
 
   <div class="page-header">
     <h2>Manage Roles & Permissions</h2>
-    <p>Create roles and manage access permissions.</p>
+    <p>Create and manage roles and permissions.</p>
   </div>
+
+  <!-- ADD ROLE -->
 
   <mat-card class="management-card">
 
     <mat-card-header>
-      <mat-card-title>Create New Role</mat-card-title>
+      <mat-card-title>Add New Role</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
 
-      <form class="role-form" (ngSubmit)="addRole()">
+      <form
+        #roleForm="ngForm"
+        class="role-form"
+        (ngSubmit)="addRole(roleForm)">
 
         <mat-form-field appearance="outline">
+
           <mat-label>Role Name</mat-label>
+
           <input
             matInput
             name="roleName"
             [(ngModel)]="newRole"
             required
           />
+
         </mat-form-field>
 
         <button mat-flat-button type="submit">
@@ -41,61 +49,199 @@
 
   </mat-card>
 
-  <div class="roles-grid">
 
-    @for (role of auth.roles(); track role.name) {
+  <!-- ROLES TABLE -->
 
-      <mat-card class="role-card">
+  <mat-card class="management-card">
 
-        <div class="role-header">
+    <mat-card-header>
+      <mat-card-title>Roles & Permissions</mat-card-title>
+    </mat-card-header>
 
-          <h3>{{ role.name }}</h3>
+    <mat-card-content>
 
-          @if (role.name !== 'Admin' && role.name !== 'User') {
+      <div class="table-container">
 
-            <div class="role-actions">
+        <table
+          mat-table
+          [dataSource]="auth.roles()"
+          class="roles-table">
 
-              <button
-                mat-icon-button
-                type="button"
-                (click)="editRole(role.name)">
-                <mat-icon>edit</mat-icon>
-              </button>
+          <!-- ROLE NAME -->
 
-              <button
-                mat-icon-button
-                type="button"
-                (click)="deleteRole(role.name)">
-                <mat-icon>delete_outline</mat-icon>
-              </button>
+          <ng-container matColumnDef="name">
 
-            </div>
+            <th mat-header-cell *matHeaderCellDef>
+              Role Name
+            </th>
 
-          }
+            <td mat-cell *matCellDef="let role">
 
-        </div>
+              @if (
+                editingRoleName === role.name &&
+                role.name !== 'User'
+              ) {
 
-        <div class="permissions-list">
+                <mat-form-field
+                  appearance="outline"
+                  class="edit-name-field">
+
+                  <input
+                    matInput
+                    [(ngModel)]="editedName"
+                    [ngModelOptions]="{standalone: true}"
+                    required
+                  />
+
+                </mat-form-field>
+
+              } @else {
+
+                {{ role.name }}
+
+              }
+
+            </td>
+
+          </ng-container>
+
+
+          <!-- PERMISSIONS -->
 
           @for (permission of permissions; track permission) {
 
-            <mat-checkbox
-              [checked]="role.permissions.includes(permission)"
-              [disabled]="role.name === 'Admin'"
-              (change)="togglePermission(role.name, permission)">
+            <ng-container [matColumnDef]="permission">
 
-              {{ permission }}
+              <th mat-header-cell *matHeaderCellDef>
+                {{ permission }}
+              </th>
 
-            </mat-checkbox>
+              <td mat-cell *matCellDef="let role">
+
+                @if (editingRoleName === role.name) {
+
+                  <mat-checkbox
+                    [checked]="editedPermissions.includes(permission)"
+                    (change)="changePermission(permission)">
+                  </mat-checkbox>
+
+                } @else {
+
+                  <mat-checkbox
+                    [checked]="role.permissions.includes(permission)"
+                    [disabled]="true">
+                  </mat-checkbox>
+
+                }
+
+              </td>
+
+            </ng-container>
 
           }
 
-        </div>
 
-      </mat-card>
+          <!-- ACTIONS -->
 
-    }
+          <ng-container matColumnDef="actions">
 
-  </div>
+            <th mat-header-cell *matHeaderCellDef>
+              Actions
+            </th>
+
+            <td mat-cell *matCellDef="let role">
+
+              @if (editingRoleName === role.name) {
+
+                <!-- SAVE -->
+
+                <button
+                  mat-icon-button
+                  type="button"
+                  (click)="saveRole()"
+                  aria-label="Save role">
+
+                  <mat-icon>save</mat-icon>
+
+                </button>
+
+                <!-- CANCEL -->
+
+                <button
+                  mat-icon-button
+                  type="button"
+                  (click)="cancelEdit()"
+                  aria-label="Cancel editing">
+
+                  <mat-icon>close</mat-icon>
+
+                </button>
+
+              } @else {
+
+                @if (role.name !== 'Admin') {
+
+                  <!-- EDIT -->
+
+                  <button
+                    mat-icon-button
+                    type="button"
+                    [disabled]="editingRoleName !== null"
+                    (click)="editRole(role.name)"
+                    aria-label="Edit role">
+
+                    <mat-icon>edit</mat-icon>
+
+                  </button>
+
+                  <!-- DELETE -->
+
+                  @if (role.name !== 'User') {
+
+                    <button
+                      mat-icon-button
+                      type="button"
+                      class="delete-button"
+                      [disabled]="editingRoleName !== null"
+                      (click)="deleteRole(role.name)"
+                      aria-label="Delete role">
+
+                      <mat-icon>delete_outline</mat-icon>
+
+                    </button>
+
+                  }
+
+                } @else {
+
+                  <span class="protected-role">
+                    Protected
+                  </span>
+
+                }
+
+              }
+
+            </td>
+
+          </ng-container>
+
+
+          <!-- TABLE ROWS -->
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns">
+          </tr>
+
+        </table>
+
+      </div>
+
+    </mat-card-content>
+
+  </mat-card>
 
 </div>

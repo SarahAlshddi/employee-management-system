@@ -20,85 +20,125 @@
 
       <div class="table-container">
 
-        <table class="management-table">
+        <table
+          mat-table
+          [dataSource]="requestService.requests()"
+          class="management-table">
 
-          <thead>
-            <tr>
-              <th>Employee</th>
-              <th>Type</th>
-              <th>Reason</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+          <!-- EMPLOYEE -->
 
-          <tbody>
+          <ng-container matColumnDef="employee">
+            <th mat-header-cell *matHeaderCellDef>Employee</th>
+            <td mat-cell *matCellDef="let request">
+              {{ getUsername(request.userId) }}
+            </td>
+          </ng-container>
 
-            @for (request of requestService.requests(); track request.id) {
+          <!-- TYPE -->
 
-              <tr>
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>Type</th>
+            <td mat-cell *matCellDef="let request">
+              {{ request.type }}
+            </td>
+          </ng-container>
 
-                <td>{{ getUsername(request.userId) }}</td>
-                <td>{{ request.type }}</td>
-                <td>{{ request.reason }}</td>
-                <td>{{ request.createdAt | date:'mediumDate' }}</td>
+          <!-- REASON -->
 
-                <td>
-                  <span
-                    class="status"
-                    [class.pending]="request.status === 'Pending'"
-                    [class.approved]="request.status === 'Approved'"
-                    [class.rejected]="request.status === 'Rejected'">
+          <ng-container matColumnDef="reason">
+            <th mat-header-cell *matHeaderCellDef>Reason</th>
+            <td mat-cell *matCellDef="let request">
 
-                    {{ request.status }}
+              <button
+                mat-button
+                type="button"
+                (click)="viewReason(request.reason)">
 
-                  </span>
-                </td>
+                <mat-icon>visibility</mat-icon>
+                View Reason
 
-                <td>
+              </button>
 
-                  @if (request.status === 'Pending') {
+            </td>
+          </ng-container>
 
-                    <div class="request-actions">
+          <!-- DATE -->
 
-                      <button
-                        mat-flat-button
-                        type="button"
-                        (click)="approve(request.id)">
-                        Approve
-                      </button>
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let request">
+              {{ request.createdAt | date:'mediumDate' }}
+            </td>
+          </ng-container>
 
-                      <button
-                        mat-stroked-button
-                        type="button"
-                        (click)="reject(request.id)">
-                        Reject
-                      </button>
+          <!-- STATUS -->
 
-                    </div>
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
 
-                  } @else {
-                    <span class="completed-text">Completed</span>
-                  }
+            <td mat-cell *matCellDef="let request">
 
-                </td>
+              <span
+                class="status"
+                [class.pending]="request.status === 'Pending'"
+                [class.approved]="request.status === 'Approved'"
+                [class.rejected]="request.status === 'Rejected'">
 
-              </tr>
+                {{ request.status }}
 
-            } @empty {
+              </span>
 
-              <tr>
-                <td colspan="6" class="empty-state">
-                  No requests found
-                </td>
-              </tr>
+            </td>
+          </ng-container>
 
-            }
+          <!-- ACTIONS -->
 
-          </tbody>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+
+            <td mat-cell *matCellDef="let request">
+
+              @if (request.status === 'Pending') {
+
+                <div class="request-actions">
+
+                  <button
+                    mat-flat-button
+                    type="button"
+                    (click)="approve(request.id)">
+                    Approve
+                  </button>
+
+                  <button
+                    mat-stroked-button
+                    type="button"
+                    (click)="reject(request.id)">
+                    Reject
+                  </button>
+
+                </div>
+
+              } @else {
+
+                <span class="completed-text">Completed</span>
+
+              }
+
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns">
+          </tr>
 
         </table>
+
+        @if (requestService.requests().length === 0) {
+          <p class="empty-state">No requests found</p>
+        }
 
       </div>
 

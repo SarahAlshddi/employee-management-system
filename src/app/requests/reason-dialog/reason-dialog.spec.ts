@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { User } from './user';
+import { ReasonDialog } from './reason-dialog';
 
-describe('User', () => {
-  let component: User;
-  let fixture: ComponentFixture<User>;
+describe('ReasonDialog', () => {
+  let component: ReasonDialog;
+  let fixture: ComponentFixture<ReasonDialog>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [User],
+      imports: [ReasonDialog],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(User);
+    fixture = TestBed.createComponent(ReasonDialog);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

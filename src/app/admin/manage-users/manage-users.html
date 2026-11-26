@@ -18,8 +18,11 @@
 
     <mat-card-content>
 
-      <form class="user-form" (ngSubmit)="addUser()">
-
+      <form
+        #userForm="ngForm"
+        class="user-form"
+        (ngSubmit)="addUser(userForm)"
+       >
         <mat-form-field appearance="outline">
           <mat-label>Username</mat-label>
           <input
@@ -79,57 +82,107 @@
 
           <tbody>
 
-            @for (user of auth.users(); track user.id) {
+  @for (user of auth.users(); track user.id) {
 
-              <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.username }}</td>
+    <tr>
 
-                <td>
-                  <mat-form-field
-                    appearance="outline"
-                    class="role-field">
+      <td>{{ user.id }}</td>
 
-                    <mat-select
-                      [ngModel]="user.role"
-                      [ngModelOptions]="{ standalone: true }"
-                      [disabled]="user.id === auth.currentUser()?.id"
-                      (ngModelChange)="changeRole(user.id, $event)">
+      <td>{{ user.username }}</td>
 
-                      @for (role of auth.roles(); track role.name) {
-                        <mat-option [value]="role.name">
-                          {{ role.name }}
-                        </mat-option>
-                      }
+      <td>
 
-                    </mat-select>
-                  </mat-form-field>
-                </td>
+        @if (editingUserId === user.id) {
 
-                <td>
-                  <button
-                    mat-icon-button
-                    type="button"
-                    [disabled]="user.id === auth.currentUser()?.id"
-                    (click)="deleteUser(user.id)">
+          <mat-form-field appearance="outline" class="role-field">
 
-                    <mat-icon>delete_outline</mat-icon>
+            <mat-select
+              [(ngModel)]="editingRole"
+              [ngModelOptions]="{ standalone: true }"
+              required>
 
-                  </button>
-                </td>
-              </tr>
+              @for (role of auth.roles(); track role.name) {
 
-            } @empty {
+                <mat-option [value]="role.name">
+                  {{ role.name }}
+                </mat-option>
 
-              <tr>
-                <td colspan="4" class="empty-state">
-                  No users found
-                </td>
-              </tr>
+              }
 
-            }
+            </mat-select>
 
-          </tbody>
+          </mat-form-field>
+
+        } @else {
+
+          {{ user.role }}
+
+        }
+
+      </td>
+
+      <td>
+
+        @if (editingUserId === user.id) {
+
+          <button
+            mat-icon-button
+            type="button"
+            [disabled]="!editingRole"
+            (click)="saveUser(user.id)">
+
+            <mat-icon>save</mat-icon>
+
+          </button>
+
+          <button
+            mat-icon-button
+            type="button"
+            (click)="cancelEdit()">
+
+            <mat-icon>close</mat-icon>
+
+          </button>
+
+        } @else {
+
+          <button
+            mat-icon-button
+            type="button"
+            [disabled]="user.id === auth.currentUser()?.id"
+            (click)="editUser(user.id, user.role)">
+
+            <mat-icon>edit</mat-icon>
+
+          </button>
+
+          <button
+            mat-icon-button
+            type="button"
+            [disabled]="user.id === auth.currentUser()?.id"
+            (click)="deleteUser(user.id)">
+
+            <mat-icon>delete_outline</mat-icon>
+
+          </button>
+
+        }
+
+      </td>
+
+    </tr>
+
+  } @empty {
+
+    <tr>
+      <td colspan="4" class="empty-state">
+        No users found
+      </td>
+    </tr>
+
+  }
+
+</tbody>
 
         </table>
 

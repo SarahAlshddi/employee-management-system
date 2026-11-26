@@ -1,8 +1,8 @@
 <mat-nav-list class="sidebar-nav">
 
   <!-- Admin Dashboard -->
-  @if (auth.hasPermission('approve-request')) {
-    <a
+@if (auth.canAccessDashboard()) {
+      <a
       mat-list-item
       routerLink="/admin"
       routerLinkActive="active-link"

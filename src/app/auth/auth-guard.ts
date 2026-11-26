@@ -54,15 +54,13 @@ export const adminDashboardGuard: CanActivateFn = () => {
     return router.createUrlTree(['/login']);
   }
 
-  const canAccess =
-    auth.hasPermission('manage-users') ||
-    auth.hasPermission('manage-roles') ||
-    auth.hasPermission('approve-request');
+  if (auth.canAccessDashboard()) {
+    return true;
+  }
 
-  return canAccess
-    ? true
-    : router.createUrlTree(['/no-access']);
+  return router.createUrlTree(['/no-access']);
 };
+
 export const guestGuard: CanActivateFn = () => {
   const auth = inject(Auth);
   const router = inject(Router);

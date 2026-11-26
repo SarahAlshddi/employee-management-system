@@ -1,23 +1,46 @@
 <div class="login-container">
-  <h2>Login</h2>
 
-  <form (ngSubmit)="login()">
-    <mat-form-field appearance="outline">
-      <mat-label>Username</mat-label>
-      <input
-        matInput
-        name="username"
-        [(ngModel)]="username"
-        required
-      />
-    </mat-form-field>
+  <mat-card class="login-card">
 
-    <button mat-flat-button type="submit">
-      Login
-    </button>
+    <mat-card-header>
+      <mat-card-title>Employee Management System</mat-card-title>
+      <mat-card-subtitle>Sign in to your account</mat-card-subtitle>
+    </mat-card-header>
 
-    @if (errorMessage) {
-      <p style="color: red">{{ errorMessage }}</p>
-    }
-  </form>
+    <mat-card-content>
+
+      <form (ngSubmit)="login()">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Username</mat-label>
+
+          <input
+            matInput
+            name="username"
+            [(ngModel)]="username"
+            required
+          />
+        </mat-form-field>
+
+        @if (errorMessage) {
+          <p class="error-message">
+            {{ errorMessage }}
+          </p>
+        }
+
+        <button
+          mat-flat-button
+          type="submit"
+          [disabled]="!username.trim()">
+
+          Login
+
+        </button>
+
+      </form>
+
+    </mat-card-content>
+
+  </mat-card>
+
 </div>
